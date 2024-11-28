@@ -75,7 +75,7 @@ const Home = () => {
           </div>
           <div>
             <div className="lg:mt-0 pt-12">
-              <img src={header} className="w-full" />
+              <img src={header} className="w-full" alt="Image" />
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { MdMenu, MdClose } from "react-icons/md";
+import { Link } from "react-router-dom"; // Import Link for React Router
 import Logo from "../assets/images/svg-housied.svg";
 import { FaGithub } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
+import SignIn from "../pages/SignIn";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,34 +28,34 @@ const Header = () => {
     <div className="bg-white sticky top-0 left-0 right-0 z-[999999]">
       <div className="max-w-screen-2xl mx-auto py-4 px-5 flex justify-between items-center">
         {/* Logo */}
-        <a href="/">
+        <Link to="/">
           <img src={Logo} alt="Logo" className="w-40" />
-        </a>
+        </Link>
 
         {/* Navigation Menu for Large Devices */}
         <div className="hidden lg:block">
           <nav>
             <ul className="flex items-center gap-8">
               {[
-                { href: "#home", label: "Home" },
-                { href: "#about", label: "About" },
-                { href: "#properties", label: "Properties" },
+                { to: "/", label: "Home" },
+                { to: "#about", label: "About" },
+                { to: "#properties", label: "Properties" },
               ].map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={() => handleLinkClick(link.href)}
-                    className={linkClasses(link.href)}
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    onClick={() => handleLinkClick(link.to)}
+                    className={linkClasses(link.to)}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
         </div>
 
-        <div className="flex items-center  justify-between space-x-6">
+        <div className="flex items-center justify-between space-x-6">
           {/* GitHub Icon */}
           <a
             href="https://github.com/parampandher004/housied-app.git"
@@ -65,13 +67,13 @@ const Header = () => {
             <FaGithub />
           </a>
           {/* Sign In/Sign Up */}
-          <a
-            href="/signin"
+          <Link
+            to="/signin"
             className="text-gray-600 hover:text-gray-900 text-2xl"
             aria-label="Sign In/Sign Up"
           >
             <FiUser />
-          </a>
+          </Link>
           {/* Hamburger Menu for Small Devices */}
           <div className="lg:hidden">
             <button onClick={toggleMenu}>
@@ -104,18 +106,18 @@ const Header = () => {
           <nav className="mt-4">
             <ul className="flex flex-col gap-6 text-center">
               {[
-                { href: "#home", label: "Home" },
-                { href: "#about", label: "About" },
-                { href: "#properties", label: "Properties" },
+                { to: "/", label: "Home" },
+                { to: "#about", label: "About" },
+                { to: "#properties", label: "Properties" },
               ].map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={() => handleLinkClick(link.href)}
-                    className={linkClasses(link.href)}
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    onClick={() => handleLinkClick(link.to)}
+                    className={linkClasses(link.to)}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
