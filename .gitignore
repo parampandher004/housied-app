@@ -44,6 +44,8 @@ dist/
 Thumbs.db
 *.lnk
 
+.prettierignore
+
 # Optional
 # Uncomment the following if applicable to your project:
 # .stylelintcache
