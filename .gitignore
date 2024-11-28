@@ -16,7 +16,6 @@ pids
 logs/
 
 # Build and Coverage
-build/
 coverage/
 
 # Dependency directories
