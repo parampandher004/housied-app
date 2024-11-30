@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useRef } from "react";
+import { delay, motion, useInView } from "framer-motion";
 import header from "../assets/images/header.webp";
 import about1 from "../assets/images/about1.jpg";
 import about2 from "../assets/images/about2.jpg";
@@ -50,33 +50,64 @@ const Home = () => {
     },
   ];
 
+  const ref = useRef(null);
+  const { inView } = useInView({
+    triggerOnce: true,
+    threshold: 1,
+  });
+
   return (
     <>
-      <div className="rounded-tl-0 rounded-tr-0 rounded-br-0 rounded-bl-0 bg-white h-[100%] mx-[0rem] mb-10">
+      <div className="rounded-tl-0 rounded-tr-0 rounded-br-0 rounded-bl-0 bg-blackVariant h-[100%] mx-[0rem] mb-10">
         <div className="lg:pt-[0.5rem] pt-[4rem] lg:mx-[5rem] mx-6 flex lg:flex-row flex-col lg:justify-between justify-start lg:items-center items-start">
           <div>
-            <h4 className="font-medium font-serif text-sm lg:text-cente md:text-start md:text-sm text-red-500">
+            <motion.h4
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="font-medium font-serif text-sm lg:text-cente md:text-start md:text-sm text-blueLight"
+            >
               Real Estate
-            </h4>
-            <h1 className="font-bold font-display text-4xl lg:text-cente md:text-start md:text-7xl text-[#091638] pt-4">
+            </motion.h4>
+            <motion.h1
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: "linear", delay: 0.6 }}
+              className="font-bold font-display text-4xl lg:text-cente md:text-start md:text-7xl text-blueDark pt-4"
+            >
               Find a Perfect <br /> Home you love..
-            </h1>
-            <p className="text-1xl md:text-1.5xl font-display md:w-[70%] text-[#808080] font-md lg:text-cente md:text-start pt-4">
+            </motion.h1>
+            <motion.p
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: "linear", delay: 1.2 }}
+              className="text-1xl md:text-1.5xl font-display md:w-[70%] text-whiteVariant font-md lg:text-cente md:text-start pt-4"
+            >
               Housied is the complete rental solution for landlords and tenants
               - list a home, rent a space, help tenants through out the process
               till they are settled in
-            </p>
+            </motion.p>
 
             <div className="fle items-center justify-center">
-              <button className="bg-red-500 text-white py-3 px-5 rounded-3xl mt-7">
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2, delay: 1.8 }}
+                className="bg-buttonColor text-white py-3 px-5 rounded-3xl mt-7"
+              >
                 More Details
-              </button>
+              </motion.button>
             </div>
           </div>
           <div>
-            <div className="lg:mt-0 pt-12">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2, delay: 2 }}
+              className="lg:mt-0 pt-12"
+            >
               <img src={header} className="w-full" alt="Image" />
-            </div>
+            </motion.div>
           </div>
         </div>
 

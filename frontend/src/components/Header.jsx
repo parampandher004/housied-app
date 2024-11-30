@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"; // Import Link for React Router
 import Logo from "../assets/images/svg-housied.svg";
 import { FaGithub } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
-import SignIn from "../pages/SignIn";
+import { motion, useInView } from "framer-motion";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,16 +21,18 @@ const Header = () => {
 
   const linkClasses = (link) =>
     link === activeLink
-      ? "text-[#FF5B28] font-bold"
-      : "text-[#0F0E0E] font-semibold";
+      ? "text-buttonColor font-bold"
+      : "text-whiteVariant font-semibold hover:text-buttonColor";
 
   return (
-    <div className="bg-white sticky top-0 left-0 right-0 z-[999999]">
+    <div className="bg-blackVariant font-parkinsans sticky top-0 left-0 right-0 z-[999999]">
       <div className="max-w-screen-2xl mx-auto py-4 px-5 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/">
-          <img src={Logo} alt="Logo" className="w-40" />
-        </Link>
+        <motion.div whileHover={{ scale: 1.1 }}>
+          {/* Logo */}
+          <Link to="/">
+            <img src={Logo} alt="Logo" className="w-40 hover:" />
+          </Link>
+        </motion.div>
 
         {/* Navigation Menu for Large Devices */}
         <div className="hidden lg:block">
@@ -61,7 +63,7 @@ const Header = () => {
             href="https://github.com/parampandher004/housied-app.git"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-900 text-2xl"
+            className="text-whiteVariant hover:text-buttonColor text-2xl"
             aria-label="GitHub Repository"
           >
             <FaGithub />
@@ -69,7 +71,7 @@ const Header = () => {
           {/* Sign In/Sign Up */}
           <Link
             to="/signin"
-            className="text-gray-600 hover:text-gray-900 text-2xl"
+            className="text-whiteVariant hover:text-buttonColor text-2xl"
             aria-label="Sign In/Sign Up"
           >
             <FiUser />

@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 const Footer = () => {
   const location = useLocation();
 
-  if (location.pathname == "/signin") return null;
+  if (location.pathname === "/signin") return null;
   return (
     <div className="bg-[#0F0E0E] relative -mt-20">
       <div className="max-w-screen-2xl mx-auto pt-20 px-5">
