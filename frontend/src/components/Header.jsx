@@ -4,7 +4,8 @@ import { Link } from "react-router-dom"; // Import Link for React Router
 import Logo from "../assets/images/svg-housied.svg";
 import { FaGithub } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import HamburgerMenu from "./HamburgerMenu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,108 +26,122 @@ const Header = () => {
       : "text-whiteVariant font-semibold hover:text-buttonColor";
 
   return (
-    <div className="bg-blackVariant font-parkinsans sticky top-0 left-0 right-0 z-[999999]">
-      <div className="max-w-screen-2xl mx-auto py-4 px-5 flex justify-between items-center">
-        <motion.div whileHover={{ scale: 1.1 }}>
-          {/* Logo */}
-          <Link to="/">
-            <img src={Logo} alt="Logo" className="w-40 hover:" />
-          </Link>
-        </motion.div>
+    <>
+      {/* Dark overlay */}
+      <div className="absolute top-0 left-0 w-full h-full bg-black z-0"></div>
+      <div className="bg-blackVariant font-parkinsans sticky top-0 left-0 right-0 z-[999999] bg-opacity-50 p-4 backdrop-blur-md">
+        <div className="max-w-screen-2xl mx-auto py-4 px-5 flex justify-between items-center">
+          <motion.div whileHover={{ scale: 1.1 }}>
+            {/* Logo */}
+            <Link to="/">
+              <img
+                src={Logo}
+                alt="Logo"
+                className="w-32 grayscale hover:grayscale-0 z-10 lg:w-40"
+              />
+            </Link>
+          </motion.div>
 
-        {/* Navigation Menu for Large Devices */}
-        <div className="hidden lg:block">
-          <nav>
-            <ul className="flex items-center gap-8">
-              {[
-                { to: "/", label: "Home" },
-                { to: "#about", label: "About" },
-                { to: "#properties", label: "Properties" },
-              ].map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    onClick={() => handleLinkClick(link.to)}
-                    className={linkClasses(link.to)}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+          {/* Navigation Menu for Large Devices */}
+          <div className="hidden lg:block z-10">
+            <nav>
+              <ul className="flex items-center gap-8">
+                {[
+                  { to: "/", label: "Home" },
+                  { to: "#about", label: "About" },
+                  { to: "#properties", label: "Properties" },
+                ].map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      onClick={() => handleLinkClick(link.to)}
+                      className={linkClasses(link.to)}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
-        <div className="flex items-center justify-between space-x-6">
-          {/* GitHub Icon */}
-          <a
-            href="https://github.com/parampandher004/housied-app.git"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-whiteVariant hover:text-buttonColor text-2xl"
-            aria-label="GitHub Repository"
-          >
-            <FaGithub />
-          </a>
-          {/* Sign In/Sign Up */}
-          <Link
-            to="/signin"
-            className="text-whiteVariant hover:text-buttonColor text-2xl"
-            aria-label="Sign In/Sign Up"
-          >
-            <FiUser />
-          </Link>
+          <div className="flex items-center justify-between space-x-4 z-10">
+            {/* GitHub Icon */}
+            <a
+              href="https://github.com/parampandher004/housied-app.git"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-whiteVariant hover:text-buttonColor text-2xl hidden lg:block"
+              aria-label="GitHub Repository"
+            >
+              <FaGithub />
+            </a>
+            {/* Sign In/Sign Up */}
+            <Link
+              to="/signin"
+              className="text-whiteVariant hover:text-buttonColor text-2xl hidden lg:block"
+              aria-label="Sign In/Sign Up"
+            >
+              <FiUser />
+            </Link>
+          </div>
           {/* Hamburger Menu for Small Devices */}
           <div className="lg:hidden">
             <button onClick={toggleMenu}>
-              {isMenuOpen ? (
-                <MdClose className="text-2xl text-[#FF5B28]" />
-              ) : (
-                <MdMenu className="text-2xl text-[#FF5B28]" />
-              )}
+              <HamburgerMenu isOpen={isMenuOpen} />
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu Drawer */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-white shadow-md z-50 lg:hidden">
-          <div className="flex justify-between items-center p-4 border-b">
-            {/* Logo */}
-            <div>
-              <img src={Logo} alt="Logo" className="w-20" />
-            </div>
-
-            {/* Close Button */}
-            <button onClick={toggleMenu}>
-              <MdClose className="text-2xl text-[#FF5B28]" />
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="mt-4">
-            <ul className="flex flex-col gap-6 text-center">
-              {[
-                { to: "/", label: "Home" },
-                { to: "#about", label: "About" },
-                { to: "#properties", label: "Properties" },
-              ].map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    onClick={() => handleLinkClick(link.to)}
-                    className={linkClasses(link.to)}
+        {/* Mobile Menu Drawer */}
+        {isMenuOpen && (
+          <div className="lg:hidden relative z-50">
+            {/* Navigation Links for Mobile */}
+            <nav className="mt-6 bg-blackVariant opacity-30 backdrop:blur-0 shadow-md">
+              <ul className="flex flex-col gap-6 text-center justify-center p-4 text-whiteVariant">
+                {[
+                  { to: "/", label: "Home" },
+                  { to: "#about", label: "About" },
+                  { to: "#properties", label: "Properties" },
+                ].map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      onClick={() => handleLinkClick(link.to)}
+                      className={linkClasses(link.to)}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  {/* GitHub Icon */}
+                  <a
+                    href="https://github.com/parampandher004/housied-app.git"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-whiteVariant hover:text-buttonColor text-2xl"
+                    aria-label="GitHub Repository"
                   >
-                    {link.label}
+                    <FaGithub />
+                  </a>
+                </li>
+                <li>
+                  {/* Sign In/Sign Up */}
+                  <Link
+                    to="/signin"
+                    className="text-whiteVariant hover:text-buttonColor text-2xl"
+                    aria-label="Sign In/Sign Up"
+                  >
+                    <FiUser />
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      )}
-    </div>
+              </ul>
+            </nav>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

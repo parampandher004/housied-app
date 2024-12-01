@@ -59,55 +59,54 @@ const Home = () => {
   return (
     <>
       <div className="rounded-tl-0 rounded-tr-0 rounded-br-0 rounded-bl-0 bg-blackVariant h-[100%] mx-[0rem] mb-10">
-        <div className="lg:pt-[0.5rem] pt-[4rem] lg:mx-[5rem] mx-6 flex lg:flex-row flex-col lg:justify-between justify-start lg:items-center items-start">
-          <div>
-            <motion.h4
-              initial={{ x: "100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="font-medium font-serif text-sm lg:text-cente md:text-start md:text-sm text-blueLight"
-            >
-              Real Estate
-            </motion.h4>
-            <motion.h1
-              initial={{ x: "100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6, ease: "linear", delay: 0.6 }}
-              className="font-bold font-display text-4xl lg:text-cente md:text-start md:text-7xl text-blueDark pt-4"
-            >
-              Find a Perfect <br /> Home you love..
-            </motion.h1>
-            <motion.p
-              initial={{ x: "100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.6, ease: "linear", delay: 1.2 }}
-              className="text-1xl md:text-1.5xl font-display md:w-[70%] text-whiteVariant font-md lg:text-cente md:text-start pt-4"
-            >
-              Housied is the complete rental solution for landlords and tenants
-              - list a home, rent a space, help tenants through out the process
-              till they are settled in
-            </motion.p>
+        <div
+          className="h-screen bg-cover bg-center flex flex-col items-start justify-center space-y-4 px-6 relative"
+          style={{
+            backgroundImage:
+              "url('https://iguwqlnptjgnjxcrhzqn.supabase.co/storage/v1/object/public/landing-page-images/landing-page-top.jpg')",
+          }}
+        >
+          {/* Dark overlay */}
+          <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 z-0"></div>
 
-            <div className="fle items-center justify-center">
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, delay: 1.8 }}
-                className="bg-buttonColor text-white py-3 px-5 rounded-3xl mt-7"
-              >
-                More Details
-              </motion.button>
-            </div>
-          </div>
-          <div>
-            <motion.div
+          <motion.h4
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: [-10, 0], opacity: 1 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="font-medium font-serif text-sm text-left text-blueLight z-10"
+          >
+            Real Estate
+          </motion.h4>
+
+          <motion.h1
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: [-10, 0], opacity: 1 }}
+            transition={{ duration: 0.2, ease: "linear", delay: 0.2 }}
+            className="font-bold font-display text-4xl text-left text-blueDark z-10"
+          >
+            Find a Perfect <br /> Home you love..
+          </motion.h1>
+
+          <motion.p
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.2, ease: "linear", delay: 0.4 }}
+            className="text-lg md:text-xl font-display text-whiteVariant text-left lg:w-1/2 w-3/4 z-10"
+          >
+            Housied is the complete rental solution for landlords and tenants -
+            list a home, rent a space, help tenants through out the process till
+            they are settled in
+          </motion.p>
+
+          <div className="flex items-center justify-start w-full">
+            <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.2, delay: 2 }}
-              className="lg:mt-0 pt-12"
+              transition={{ duration: 0.2, delay: 0.6 }}
+              className="bg-buttonColor text-white py-3 px-5 rounded-3xl z-10"
             >
-              <img src={header} className="w-full" alt="Image" />
-            </motion.div>
+              More Details
+            </motion.button>
           </div>
         </div>
 
