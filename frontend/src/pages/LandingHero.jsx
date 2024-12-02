@@ -5,7 +5,7 @@ import about2 from "../assets/images/about2.jpg";
 import about3 from "../assets/images/about3.webp";
 import { BiHome } from "react-icons/bi";
 import ListingItem from "../components/ListingItem";
-import header from "../assets/images/landing-page-top";
+import header from "../assets/images/landing-page-top.jpg";
 
 const Home = () => {
   const offerListing = [
@@ -60,10 +60,9 @@ const Home = () => {
     <>
       <div className="rounded-tl-0 rounded-tr-0 rounded-br-0 rounded-bl-0 bg-blackVariant h-[100%] mx-[0rem] mb-10">
         <div
-          className="h-screen bg-cover bg-center flex flex-col items-start justify-center space-y-4 px-6 relative"
+          className="h-screen bg-cover bg-center flex flex-col items-start justify-center space-y-4 px-6 relative bg-header"
           style={{
-            backgroundImage:
-              {header},
+            backgroundImage: `url(${header})`,
           }}
         >
           {/* Dark overlay */}
