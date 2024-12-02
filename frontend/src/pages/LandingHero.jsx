@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { delay, motion, useInView } from "framer-motion";
-import header from "../assets/images/header.webp";
 import about1 from "../assets/images/about1.jpg";
 import about2 from "../assets/images/about2.jpg";
 import about3 from "../assets/images/about3.webp";
 import { BiHome } from "react-icons/bi";
 import ListingItem from "../components/ListingItem";
+import header from "../assets/images/landing-page-top";
 
 const Home = () => {
   const offerListing = [
@@ -63,7 +63,7 @@ const Home = () => {
           className="h-screen bg-cover bg-center flex flex-col items-start justify-center space-y-4 px-6 relative"
           style={{
             backgroundImage:
-              "url('https://iguwqlnptjgnjxcrhzqn.supabase.co/storage/v1/object/public/landing-page-images/landing-page-top.jpg')",
+              {header},
           }}
         >
           {/* Dark overlay */}
