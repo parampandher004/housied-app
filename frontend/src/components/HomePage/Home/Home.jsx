@@ -36,7 +36,7 @@ const FixedSearch = () => {
 
   return (
     <motion.div
-      className="fixed top-1/2  w-full transform z-10 flex flex-col items-center"
+      className="sticky top-1/2  w-full transform z-10 flex flex-col items-center"
       style={{ opacity }}
     >
       <h1 className="text-2xl p-4 text-white font-frederickaTheGreat">

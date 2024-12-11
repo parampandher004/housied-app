@@ -12,7 +12,7 @@ import { EffectCards } from "swiper/modules";
 const Offers = () => {
   return (
     <section
-      className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-black p-6 md:p-12"
+      className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-black p-6 md:p-12"
       id="offers"
     >
       {/* Left Section */}
@@ -31,7 +31,7 @@ const Offers = () => {
       </div>
 
       {/* Right Section */}
-      <div className="grid grid-flow-col auto-cols-[300px] gap-4 justify-self-end p-4">
+      <div className="grid grid-flow-col auto-cols-[300px] gap-4 p-4">
         <Swiper
           effect={"cards"}
           grabCursor={true}
