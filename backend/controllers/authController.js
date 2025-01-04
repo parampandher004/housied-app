@@ -1,79 +1,126 @@
 import crypto from "crypto";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { hashPassword, comparePasswords } from "../utils/auth";
+import jwt from "jsonwebtoken";
+import { supabase } from "../config/supabase.js";
+import { hashPassword, comparePasswords } from "../utils/auth.js";
 
-const validateRegistrationInput = (Input) => {
-  const { email, password, accountType, phoneNumber, firstName, lastName } =
-    Input;
-  if (
-    !email ||
-    !password ||
-    !accountType ||
-    !phoneNumber ||
-    !firstName ||
-    !lastName
-  ) {
-    throw new Error("Please provide all required fields");
-  }
-  if (!["tenant", "house_owner", "admin"].includes(accountType)) {
-    throw new Error("Invalid account type");
-  }
-};
+export const register = async (req, res) => {
+  try {
+    const {
+      firstName,
+      middleName,
+      lastName,
+      phoneNumber,
+      email,
+      password,
+      accountType,
+      dob,
+    } = req.body;
 
-const createUserInDb = async (userID, email, password, accountType) => {
-  const { data: user, error: userError } = await supabase
-    .from("users")
-    .insert([
+    const userId = crypto.randomUUID();
+
+    // Create base user
+    const { error: userError } = await supabase.from("users").insert([
       {
-        id: userID,
+        id: userId,
         email: email,
         password: await hashPassword(password),
         account_type: accountType,
       },
-    ])
-    .select();
+    ]);
 
-  if (userError) {
-    throw new Error(userError.message);
-  }
-  return user;
-};
+    if (userError) throw userError;
 
-const createSpecificAccountType = async (accountType, userData) => {
-  const { userId, firstName, middleName, lastName, phoneNumber } = userData;
-  const tableMap = {
-    table: `${accountType}`,
-    data: {
+    // Create specific account type
+    const tableData = {
       [`${accountType}_phoneNumber`]: phoneNumber ? Number(phoneNumber) : null,
       [`${accountType}_userID`]: userId,
       [`${accountType}_firstName`]: firstName,
       [`${accountType}_middleName`]: middleName || null,
       [`${accountType}_lastName`]: lastName,
       [`${accountType}_dob`]: dob || null,
-    },
-  };
-  const { data: specificData, error } = await supabase
-    .from(tableMap.table)
-    .insert(tableMap.data)
-    .select();
+    };
 
-  if (error) {
-    throw new Error(error.message);
+    const { data: specificData, error: specificError } = await supabase
+      .from(accountType)
+      .insert([tableData])
+      .select()
+      .single();
+
+    if (specificError) throw specificError;
+
+    const token = jwt.sign(
+      { userId, accountType },
+      process.env.SUPABASE_JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.status(201).json({
+      message: "Registration successful",
+      token,
+      userType: accountType,
+      userDetails: {
+        userID: userId,
+        email: email,
+        firstName: specificData[`${accountType}_firstName`],
+        middleName: specificData[`${accountType}_middleName`],
+        lastName: specificData[`${accountType}_lastName`],
+        phoneNumber: specificData[`${accountType}_phoneNumber`],
+        dob: specificData[`${accountType}_dob`],
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-  return specificData;
 };
 
-export const register = async (req, res) => {
+export const login = async (req, res) => {
   try {
-    validateRegistrationInput(req.body);
+    const { email, password } = req.body;
 
-    const userID = crypto.randomUUID();
-    const { email, password, accountType, ...userData } = req.body;
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
 
-    const user = await createUserInDb(userID, email, password, accountType);
-    const specificData = await createSpecificAccountType(accountType, userData);
-    res.status(201).send({ message: "User registered successfully", user });
+    if (userError || !user) {
+      throw new Error("Invalid credentials");
+    }
+
+    const isValidPassword = await comparePasswords(user.password, password);
+    if (!isValidPassword) {
+      throw new Error("Invalid credentials");
+    }
+
+    const { data: specificData, error: specificError } = await supabase
+      .from(user.account_type)
+      .select("*")
+      .eq(`${user.account_type}_userID`, user.id)
+      .single();
+
+    if (specificError) throw specificError;
+
+    const token = jwt.sign(
+      { userId: user.id, accountType: user.account_type },
+      process.env.SUPABASE_JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      userType: user.account_type,
+      userDetails: {
+        userID: user.id,
+        email: user.email,
+        firstName: specificData[`${user.account_type}_firstName`],
+        middleName: specificData[`${user.account_type}_middleName`],
+        lastName: specificData[`${user.account_type}_lastName`],
+        phoneNumber: specificData[`${user.account_type}_phoneNumber`],
+        dob: specificData[`${user.account_type}_dob`],
+      },
+    });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(401).json({ error: error.message });
   }
 };

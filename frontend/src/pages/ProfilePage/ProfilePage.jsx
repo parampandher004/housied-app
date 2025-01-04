@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
       if (token) {
         try {
-          const response = await axios.get("http://localhost:5000/user-info", {
+          const response = await axios.get("http://localhost:5000/user/info", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -54,7 +54,7 @@ const ProfilePage = () => {
     try {
       const token = Cookies.get("authToken");
       const response = await axios.put(
-        "http://localhost:5000/user-info",
+        "http://localhost:5000/user/info",
         { [field]: editedDetails[field] },
         {
           headers: {

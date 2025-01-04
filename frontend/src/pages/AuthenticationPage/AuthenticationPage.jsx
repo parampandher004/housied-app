@@ -3,6 +3,7 @@ import { useGlobalState } from "../../hooks/useGlobalState";
 import { ACTION_TYPES } from "../../context/ActionTypes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const AuthenticationPage = () => {
   const { state, dispatch } = useGlobalState();
@@ -11,6 +12,7 @@ const AuthenticationPage = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const [isLogin, setIsLogin] = useState(true);
 
   const handleInputChange = (e) => {
@@ -36,11 +38,11 @@ const AuthenticationPage = () => {
       if (!formData.accountType)
         newErrors.accountType = "Please select an account type";
     } else {
-      if (!loginData.email) newErrors.email = "This field is required";
-      if (!/\S+@\S+\.\S+/.test(loginData.email)) {
+      if (!formData.email) newErrors.email = "This field is required";
+      if (!/\S+@\S+\.\S+/.test(formData.email)) {
         newErrors.email = "Invalid email format";
       }
-      if (!loginData.password) newErrors.password = "This field is required";
+      if (!formData.password) newErrors.password = "This field is required";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -51,12 +53,18 @@ const AuthenticationPage = () => {
     if (validateForm()) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/${isLogin ? "login" : "register"}`,
+          `http://localhost:5000/auth/${isLogin ? "login" : "register"}`,
           formData
         );
 
         if (response.status === 200) {
           const result = response.data;
+          Cookies.set("authToken", result.token, { expires: 7 });
+          Cookies.set("userType", result.userType, { expires: 7 });
+          Cookies.set("userID", result.userDetails.userID, { expires: 7 });
+          Cookies.set("userDetails", JSON.stringify(result.userDetails), {
+            expires: 7,
+          });
           dispatch({
             type: isLogin ? ACTION_TYPES.LOGIN : ACTION_TYPES.REGISTER,
             payload: {
@@ -74,7 +82,7 @@ const AuthenticationPage = () => {
               profilePicture: result.userDetails.profilePicture,
             },
           });
-          navigate("/dashboard");
+          navigate("/layout/profile");
         }
       } catch (error) {
         console.error("Error during authentication:", error);
@@ -89,6 +97,95 @@ const AuthenticationPage = () => {
           {isLogin ? "Login" : "Register"}
         </h2>
         <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <>
+              <div className="mb-4">
+                <label
+                  htmlFor="firstName"
+                  className="block text-gray-700 dark:text-gray-300"
+                >
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="lastName"
+                  className="block text-gray-700 dark:text-gray-300"
+                >
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-gray-700 dark:text-gray-300"
+                >
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="address"
+                  className="block text-gray-700 dark:text-gray-300"
+                >
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  id="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="dob"
+                  className="block text-gray-700 dark:text-gray-300"
+                >
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  name="dob"
+                  id="dob"
+                  value={formData.dob}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+            </>
+          )}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -123,6 +220,25 @@ const AuthenticationPage = () => {
               required
             />
           </div>
+          {!isLogin && (
+            <div className="mb-4">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-gray-700 dark:text-gray-300"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:border-blue-500"
+                required
+              />
+            </div>
+          )}
           <div className="flex items-center justify-between">
             <button
               type="submit"
