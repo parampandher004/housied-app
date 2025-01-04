@@ -1,12 +1,14 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
-import ListingPage from "../ListingPage/ListingPage";
 
 const Layout = () => {
   return (
-    <div className="flex">
+    <div className="top-0 left-0 right-0 relative flex">
       <SideNavBar />
-      <ListingPage />
+      <div className="ml-16 p-4">
+        <Outlet />
+      </div>
     </div>
   );
 };

@@ -11,6 +11,9 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
+import { useGlobalState } from "../../hooks/useGlobalState";
+import { Link } from "react-router-dom";
+import { ACTION_TYPES } from "../../context/ActionTypes";
 
 const SideNavBar = () => {
   const [open, setOpen] = useState(true);
@@ -19,7 +22,7 @@ const SideNavBar = () => {
   return (
     <motion.nav
       layout
-      className="sticky top-0 h-screen shrink-0 border-r border-slate-300 bg-white p-2"
+      className="sticky top-0 h-screen z-10 shrink-0 border-r border-slate-300 bg-white p-2"
       style={{
         width: open ? "225px" : "fit-content",
       }}
@@ -128,53 +131,45 @@ const Option = ({ Icon, title, selected, setSelected, open, notifs }) => {
 };
 
 const TitleSection = ({ open }) => {
+  const { state, dispatch } = useGlobalState();
+
+  const { auth, logo } = state;
+  const { userType, userDetails } = auth;
   return (
     <div className="mb-3 border-b border-slate-300 pb-3">
       <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
-        <div className="flex items-center gap-2">
+        <Link to="/layout/profile" className="flex items-center gap-2">
+          {" "}
           <Logo />
-          {open && (
+          {open && userDetails && (
             <motion.div
               layout
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.125 }}
             >
-              <span className="block text-xs font-semibold">TomIsLoading</span>
-              <span className="block text-xs text-slate-500">Pro Plan</span>
+              <span className="block text-xs text-black font-semibold">
+                {userDetails.firstName}
+              </span>
+              <span className="block text-xs text-slate-500">{userType}</span>
             </motion.div>
           )}
-        </div>
-        {open && <FiChevronDown className="mr-2" />}
+        </Link>
       </div>
     </div>
   );
 };
 
 const Logo = () => {
-  // Temp logo from https://logoipsum.com/
+  const { state } = useGlobalState();
+
+  const { logo } = state;
   return (
     <motion.div
       layout
-      className="grid size-10 shrink-0 place-content-center rounded-md bg-indigo-600"
+      className="grid size-10 shrink-0 place-content-center rounded-md bg-transparent"
     >
-      <svg
-        width="24"
-        height="auto"
-        viewBox="0 0 50 39"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="fill-slate-50"
-      >
-        <path
-          d="M16.4992 2H37.5808L22.0816 24.9729H1L16.4992 2Z"
-          stopColor="#000000"
-        ></path>
-        <path
-          d="M17.4224 27.102L11.4192 36H33.5008L49 13.0271H32.7024L23.2064 27.102H17.4224Z"
-          stopColor="#000000"
-        ></path>
-      </svg>
+      <img src={logo.src} alt={logo.alt} />
     </motion.div>
   );
 };

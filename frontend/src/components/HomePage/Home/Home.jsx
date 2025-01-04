@@ -1,6 +1,5 @@
 import { Typewriter } from "react-simple-typewriter";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { FiMapPin } from "react-icons/fi";
 import SearchButton from "../../SearchButton/SearchButton";
 
 const SECTION_HEIGHT = 400;

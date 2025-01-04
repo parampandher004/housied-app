@@ -7,3 +7,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --base-100: var(--primary-100);
+  --base-200: var(--primary-200);
+  --base-300: var(--primary-300);
+  --base-400: var(--primary-400);
+}

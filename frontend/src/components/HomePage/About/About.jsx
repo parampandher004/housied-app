@@ -77,15 +77,15 @@ const squareData = [
     },
     {
       id: 8,
-      src: "https://images.unsplash.com/photo-1600585154340-be6161ab9d17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+      src: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ],
 ];
 
 const generateSquares = () => {
-  return shuffle(squareData).map((sq) => (
+  return shuffle(squareData).map((sq, index) => (
     <motion.div
-      key={sq.id}
+      key={index}
       layout
       transition={{ duration: 1.5, type: "spring" }}
       className="w-full h-full"
@@ -110,12 +110,12 @@ const ShuffleGrid = () => {
   const shuffleSquares = () => {
     setSquares(generateSquares());
 
-    timeoutRef.current = setTimeout(shuffleSquares, 3000);
+    timeoutRef.current = setTimeout(shuffleSquares, 3000); // Set shuffle interval
   };
 
   return (
     <div className="grid grid-cols-4 grid-rows-4 h-[450px] gap-1">
-      {squares.map((sq) => sq)}
+      {squares}
     </div>
   );
 };

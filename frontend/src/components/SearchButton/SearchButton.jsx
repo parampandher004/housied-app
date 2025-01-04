@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchButton = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/layout?search=${encodeURIComponent(searchTerm)}`);
+    }
+  };
+
   return (
     <div className="w-full max-w-sm min-w-[200px]">
       <div className="relative flex items-center">
@@ -19,10 +29,12 @@ const SearchButton = () => {
         <input
           className="w-full text-sm bg-transparent placeholder:text-white text-white border border-slate-200 rounded-md pl-10 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
           placeholder="Search place..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button
-          className="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
-          type="button"
+          onClick={handleSearch}
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
         >
           Search
         </button>
