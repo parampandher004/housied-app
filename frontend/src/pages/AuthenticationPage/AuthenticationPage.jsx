@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 const AuthenticationPage = () => {
+  const API_URL = import.meta.env.BACKEND_URL || "http://localhost:5000";
   const { state, dispatch } = useGlobalState();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -53,7 +54,7 @@ const AuthenticationPage = () => {
     if (validateForm()) {
       try {
         const response = await axios.post(
-          `http://localhost:5000/auth/${isLogin ? "login" : "register"}`,
+          `${API_URL}/auth/${isLogin ? "login" : "register"}`,
           formData
         );
 

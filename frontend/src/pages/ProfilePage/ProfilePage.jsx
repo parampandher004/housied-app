@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const ProfilePage = () => {
+  const API_URL = import.meta.env.BACKEND_URL || "http://localhost:5000";
   const { state, dispatch } = useGlobalState();
   const { auth, user } = state;
 
@@ -19,7 +20,7 @@ const ProfilePage = () => {
 
       if (token) {
         try {
-          const response = await axios.get("http://localhost:5000/user/info", {
+          const response = await axios.get(`${API_URL}/user/info`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -54,7 +55,7 @@ const ProfilePage = () => {
     try {
       const token = Cookies.get("authToken");
       const response = await axios.put(
-        "http://localhost:5000/user/info",
+        `${API_URL}/user/info`,
         { [field]: editedDetails[field] },
         {
           headers: {
