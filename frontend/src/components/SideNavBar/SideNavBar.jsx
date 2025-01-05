@@ -9,15 +9,49 @@ import {
   FiShoppingCart,
   FiTag,
   FiUsers,
+  FiList,
+  FiBookOpen,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useGlobalState } from "../../hooks/useGlobalState";
 import { Link } from "react-router-dom";
-import { ACTION_TYPES } from "../../context/ActionTypes";
 
 const SideNavBar = () => {
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState("Dashboard");
+  const { state } = useGlobalState();
+  const { auth } = state;
+  const { userType = "tenant" } = auth;
+
+  const options = {
+    admin: [
+      { Icon: FiHome, title: "Profile", path: "/layout/profile" },
+      {
+        Icon: FiDollarSign,
+        title: "Dashboard",
+        path: "/layout/dashboard",
+        notifs: 3,
+      },
+      { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
+      { Icon: FiUsers, title: "Users Listing", path: "/layout/users" },
+      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
+      { Icon: FiBookOpen, title: "Booking Record", path: "/booking-record" },
+      { Icon: FiBarChart, title: "Reports", path: "/reports" },
+    ],
+    house_owner: [
+      { Icon: FiHome, title: "Profile", path: "/profile" },
+      { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
+      { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
+      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
+      { Icon: FiBookOpen, title: "Booking Record", path: "/booking-record" },
+    ],
+    tenant: [
+      { Icon: FiHome, title: "Profile", path: "/profile" },
+      { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
+      { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
+      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
+    ],
+  };
 
   return (
     <motion.nav
@@ -30,56 +64,18 @@ const SideNavBar = () => {
       <TitleSection open={open} />
 
       <div className="space-y-1">
-        <Option
-          Icon={FiHome}
-          title="Dashboard"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiDollarSign}
-          title="Sales"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-          notifs={3}
-        />
-        <Option
-          Icon={FiMonitor}
-          title="View Site"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiShoppingCart}
-          title="Products"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiTag}
-          title="Tags"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiBarChart}
-          title="Analytics"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiUsers}
-          title="Members"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
+        {options[userType].map((option, index) => (
+          <Option
+            key={index}
+            Icon={option.Icon}
+            title={option.title}
+            path={option.path}
+            selected={selected}
+            setSelected={setSelected}
+            open={open}
+            notifs={option.notifs}
+          />
+        ))}
       </div>
 
       <ToggleClose open={open} setOpen={setOpen} />
@@ -87,61 +83,72 @@ const SideNavBar = () => {
   );
 };
 
-const Option = ({ Icon, title, selected, setSelected, open, notifs }) => {
+const Option = ({ Icon, title, path, selected, setSelected, open, notifs }) => {
   return (
-    <motion.button
-      layout
-      onClick={() => setSelected(title)}
-      className={`relative flex h-10 w-full items-center rounded-md transition-colors ${selected === title ? "bg-indigo-100 text-indigo-800" : "text-slate-500 hover:bg-slate-100"}`}
-    >
-      <motion.div
+    <Link to={path}>
+      <motion.button
         layout
-        className="grid h-full w-10 place-content-center text-lg"
+        onClick={() => setSelected(title)}
+        className={`relative flex h-10 w-full items-center rounded-md transition-colors ${
+          selected === title
+            ? "bg-indigo-100 text-indigo-800"
+            : "text-slate-500 hover:bg-slate-100"
+        }`}
       >
-        <Icon />
-      </motion.div>
-      {open && (
-        <motion.span
+        <motion.div
           layout
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.125 }}
-          className="text-xs font-medium"
+          className="grid h-full w-10 place-content-center text-lg"
         >
-          {title}
-        </motion.span>
-      )}
+          <Icon />
+        </motion.div>
+        {open && (
+          <motion.span
+            layout
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.125 }}
+            className="text-xs font-medium"
+          >
+            {title}
+          </motion.span>
+        )}
 
-      {notifs && open && (
-        <motion.span
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          style={{ y: "-50%" }}
-          transition={{ delay: 0.5 }}
-          className="absolute right-2 top-1/2 size-4 rounded bg-indigo-500 text-xs text-white"
-        >
-          {notifs}
-        </motion.span>
-      )}
-    </motion.button>
+        {notifs && open && (
+          <motion.span
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+            style={{ y: "-50%" }}
+            transition={{ delay: 0.5 }}
+            className="absolute right-2 top-1/2 size-4 rounded bg-indigo-500 text-xs text-white"
+          >
+            {notifs}
+          </motion.span>
+        )}
+      </motion.button>
+    </Link>
   );
 };
 
 const TitleSection = ({ open }) => {
-  const { state, dispatch } = useGlobalState();
+  const { state } = useGlobalState();
 
-  const { auth, logo } = state;
-  const { userType, userDetails } = auth;
+  const { auth, logo, user } = state;
+  const { userType } = auth;
+  let fullName = "";
+  if (user.middleName !== null) {
+    fullName = `${user.firstName} ${user.middleName} ${user.lastName}`;
+  } else {
+    fullName = `${user.firstName} ${user.lastName}`;
+  }
   return (
     <div className="mb-3 border-b border-slate-300 pb-3">
       <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
         <Link to="/layout/profile" className="flex items-center gap-2">
-          {" "}
           <Logo />
-          {open && userDetails && (
+          {open && user && (
             <motion.div
               layout
               initial={{ opacity: 0, y: 12 }}
@@ -149,7 +156,7 @@ const TitleSection = ({ open }) => {
               transition={{ delay: 0.125 }}
             >
               <span className="block text-xs text-black font-semibold">
-                {userDetails.firstName}
+                {fullName}
               </span>
               <span className="block text-xs text-slate-500">{userType}</span>
             </motion.div>
@@ -205,4 +212,5 @@ const ToggleClose = ({ open, setOpen }) => {
     </motion.button>
   );
 };
+
 export default SideNavBar;

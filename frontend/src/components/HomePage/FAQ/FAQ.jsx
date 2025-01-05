@@ -10,35 +10,38 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: "How do I update my billing information?",
+      question: "How do I list my property on the platform?",
       answer:
-        "To update your billing information, navigate to your account settings and click on the 'Billing Information' section. Update the required fields and save changes.",
+        "To list your property, navigate to the 'List Property' section, fill in the required details, and submit your listing for review.",
     },
     {
-      question: "How can I contact customer support?",
+      question: "How can I contact the property owner?",
       answer:
-        "To contact customer support, click on the 'Help' or 'Contact Us' link on our platform. You can email, call, or use the live chat feature for assistance.",
+        "You can contact the property owner by clicking on the 'Contact Owner' button on the property listing page. You will be provided with the owner's contact details.",
     },
     {
-      question: "How do I update my profile information?",
+      question: "How do I schedule a property visit?",
       answer:
-        "Go to your account settings and click on 'Edit Profile.' Make your desired changes and click save to update your profile information.",
+        "To schedule a property visit, click on the 'Schedule Visit' button on the property listing page and select a convenient date and time.",
     },
     {
-      question: "How do I find my purchase history?",
+      question: "What are the payment options available?",
       answer:
-        "Your purchase history is available under the 'Orders' section in your account dashboard. You can view and download invoices for each transaction.",
+        "We offer various payment options including credit/debit cards, net banking, and UPI. You can choose your preferred payment method during the checkout process.",
     },
   ];
 
   return (
-    <section className="py-24" id="faq">
+    <section
+      className="py-24 bg-white-background dark:bg-black-background"
+      id="faq"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16">
-          <h6 className="text-lg text-indigo-600 font-medium text-center mb-2">
+          <h6 className="text-lg text-base-400 dark:text-base-100 font-medium text-center mb-2">
             FAQs
           </h6>
-          <h2 className="text-4xl font-manrope text-center font-bold text-gray-900 leading-[3.25rem]">
+          <h2 className="text-4xl font-manrope text-center font-bold text-black-foreground dark:text-white-foreground leading-[3.25rem]">
             Frequently Asked Questions
           </h2>
         </div>
@@ -46,25 +49,27 @@ const FAQ = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className={`accordion py-8 px-6 border-b border-solid border-gray-200 transition-all duration-500 rounded-2xl hover:bg-indigo-50 ${
-                activeIndex === index ? "bg-indigo-50" : ""
+              className={`accordion py-8 px-6 border-b border-solid border-white-border dark:border-black-border transition-all duration-500 rounded-2xl hover:bg-base-100 dark:hover:bg-base-400 ${
+                activeIndex === index ? "bg-indigo-50 dark:bg-gray-800" : ""
               }`}
             >
               <button
-                className="accordion-toggle group inline-flex items-center justify-between leading-8 text-gray-900 w-full transition duration-500 text-left hover:text-indigo-600 font-medium"
+                className="accordion-toggle group inline-flex items-center justify-between leading-8 text-black-foreground dark:text-white-foreground w-full transition duration-500 text-left hover:text-base-300 dark:hover:text-base-200 font-medium"
                 onClick={() => toggleAccordion(index)}
               >
                 <h5>{faq.question}</h5>
                 <FiChevronDown
-                  className={`text-gray-500 transition duration-500 group-hover:text-indigo-600 ${
-                    activeIndex === index ? "rotate-180 text-indigo-600" : ""
+                  className={`text-gray-500 dark:text-gray-400 transition duration-500 group-hover:text-base-400 dark:group-hover:text-base-100 ${
+                    activeIndex === index
+                      ? "rotate-180 text-black-foreground dark:text-white-foreground"
+                      : ""
                   }`}
                   size={22}
                 />
               </button>
               {activeIndex === index && (
                 <div className="accordion-content w-full px-0 overflow-hidden mt-4">
-                  <p className="text-base text-gray-900 leading-6">
+                  <p className="text-base-200 text-black-foreground dark:text-white-foreground leading-6">
                     {faq.answer}
                   </p>
                 </div>

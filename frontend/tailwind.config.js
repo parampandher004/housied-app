@@ -35,8 +35,8 @@ export default {
         black: {
           background: "#000011",
           foreground: "#000000",
-          border: "#373737",
-          fill: "#484848",
+          border: "#363659",
+          fill: "#262648",
         },
 
         white: {

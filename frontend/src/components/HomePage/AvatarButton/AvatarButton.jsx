@@ -36,15 +36,15 @@ export default function AvatarButton() {
         <button
           id="avatarButton"
           type="button"
-          className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+          className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
           onClick={() => setDropdownOpen((prev) => !prev)}
         >
-          <FaUserCircle size={24} />
+          <FaUserCircle size={28} />
         </button>
       ) : (
         <Link to="/signin">
-          <button className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
-            <FaUserCircle size={24} />
+          <button className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+            <FaUserCircle size={28} />
           </button>
         </Link>
       )}

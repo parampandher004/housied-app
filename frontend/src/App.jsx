@@ -7,6 +7,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ListingPage from "./pages/ListingPage/ListingPage";
 import Layout from "./pages/Layout/Layout";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import UsersListingPage from "./pages/UsersListingPage/UsersListingPage";
 
 const App = () => {
   const { state } = useGlobalState();
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/layout" element={<Layout />}>
           <Route path="listing" element={<ListingPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="users" element={<UsersListingPage />} />
         </Route>
       </Routes>
     </Router>

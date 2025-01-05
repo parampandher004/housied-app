@@ -6,7 +6,7 @@ const SECTION_HEIGHT = 400;
 
 export const Home = () => {
   return (
-    <div className="bg-white dark:bg-black" id="home">
+    <div className="bg-white-background dark:bg-black-background" id="home">
       <Hero />
     </div>
   );
@@ -23,7 +23,7 @@ const Hero = () => {
       className="relative w-full bg-container bg-cover bg-center "
     >
       <FixedSearch />
-      <div className="absolute bottom-0 left-0 right-0 h-[700px] bg-gradient-to-b from-white/0 to-white dark:from-black/0 dark:to-black" />
+      <div className="absolute bottom-0 left-0 right-0 h-[700px] bg-gradient-to-b from-white-background/0 to-white-background dark:from-black-background/0 dark:to-black-background" />
     </div>
   );
 };
@@ -38,7 +38,7 @@ const FixedSearch = () => {
       className="sticky top-1/2  w-full transform z-10 flex flex-col items-center"
       style={{ opacity }}
     >
-      <h1 className="text-2xl p-4 text-white font-frederickaTheGreat">
+      <h1 className="text-2xl p-4 text-white-foreground font-frederickaTheGreat">
         Find your space, live your dream, and redefine your{" "}
         <div>
           <Typewriter

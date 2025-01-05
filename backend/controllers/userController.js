@@ -100,3 +100,67 @@ export const updateUserInfo = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+export const getAllUsers = async (req, res) => {
+  try {
+    // Fetch all users
+    const { data: users, error: usersError } = await supabase
+      .from("users")
+      .select("id, email, account_type, created_at");
+
+    if (usersError) throw usersError;
+    // Fetch corresponding names from respective tables
+    const userDetailsPromises = users.map(async (user) => {
+      const { data: userInfo, error: userInfoError } = await supabase
+        .from(user.account_type)
+        .select(
+          `
+          ${user.account_type}_firstName,
+          ${user.account_type}_middleName,
+          ${user.account_type}_lastName
+        `
+        )
+        .eq(`${user.account_type}_userID`, user.id)
+        .maybeSingle();
+
+      if (userInfoError) throw userInfoError;
+      return {
+        userID: user.id,
+        email: user.email || null,
+        accountType: user.account_type,
+        firstName: userInfo[`${user.account_type}_firstName`],
+        middleName: userInfo[`${user.account_type}_middleName`] || null,
+        lastName: userInfo[`${user.account_type}_lastName`],
+        createdAt: user.created_at,
+      };
+    });
+
+    const userDetails = await Promise.all(userDetailsPromises);
+
+    res.status(200).json({
+      message: "Users retrieved successfully",
+      users: userDetails,
+    });
+  } catch (error) {
+    console.error("Error retrieving users:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Delete user from users table
+    const { error: userError } = await supabase
+      .from("users")
+      .delete()
+      .eq("id", userId);
+
+    if (userError) throw userError;
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(400).json({ error: error.message });
+  }
+};

@@ -26,7 +26,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header scrollToSection={scrollToSection} />
-      <main className="w-full h-full mt-20 p-4 bg-white dark:bg-black">
+      <main className="w-full h-full mt-20 p-4 bg-white-background dark:bg-black-background">
         <Home />
         <About />
         <Offers />

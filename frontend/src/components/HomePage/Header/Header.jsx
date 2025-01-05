@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
-// import Logo from "../../../assets/logo/new-logo.svg";
 import { useGlobalState } from "../../../hooks/useGlobalState";
 import DarkModeSwitch from "../../DarkModeSwitch/DarkModeSwitch";
 import AvatarButton from "../AvatarButton/AvatarButton";
@@ -27,11 +26,6 @@ const Header = ({ scrollToSection }) => {
   };
 
   useEffect(() => {
-    console.log("User Type:", userType);
-    console.log(
-      "Base-200 value:",
-      getComputedStyle(document.documentElement).getPropertyValue("--base-200")
-    );
     const handleScroll = () => {
       let currentActive = "";
       NAV_ITEMS.forEach(({ id }) => {

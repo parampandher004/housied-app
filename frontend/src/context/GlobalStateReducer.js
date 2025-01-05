@@ -25,6 +25,7 @@ export const initialState = {
     userID: null,
     userName: "",
     email: "",
+    createdAt: null,
   },
   user: {
     firstName: "",

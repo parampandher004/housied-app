@@ -62,7 +62,6 @@ const AuthenticationPage = () => {
           const result = response.data;
           Cookies.set("authToken", result.token, { expires: 7 });
           Cookies.set("userType", result.userType, { expires: 7 });
-          Cookies.set("userID", result.userDetails.userID, { expires: 7 });
           Cookies.set("userDetails", JSON.stringify(result.userDetails), {
             expires: 7,
           });

@@ -18,7 +18,7 @@ const SearchButton = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="absolute w-5 h-5 top-2.5 left-2.5 text-white"
+          className="absolute w-5 h-5 top-2.5 left-2.5 text-white-foreground"
         >
           <path
             fillRule="evenodd"
@@ -27,14 +27,14 @@ const SearchButton = () => {
           />
         </svg>
         <input
-          className="w-full text-sm bg-transparent placeholder:text-white text-white border border-slate-200 rounded-md pl-10 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+          className="w-full text-sm bg-transparent placeholder:text-white-foreground text-white-foreground border border-white-border rounded-md pl-10 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
           placeholder="Search place..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button
           onClick={handleSearch}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="ml-2 px-4 py-2 bg-base-400 dark:bg-base-100 dark:text-black-foreground text-white-foreground rounded-md"
         >
           Search
         </button>

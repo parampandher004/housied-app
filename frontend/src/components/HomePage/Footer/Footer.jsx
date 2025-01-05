@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../../assets/logo/new-logo.svg";
+import { useGlobalState } from "../../../hooks/useGlobalState";
 
 const Footer = () => {
+  const { state } = useGlobalState();
+  const { logo } = state;
   const resources = [
     { name: "React Router", href: "https://reactrouter.com", type: "external" },
     {
@@ -38,13 +40,13 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-white dark:bg-gray-900 relative bottom-0">
+    <footer className="bg-white-fill dark:bg-black-fill relative bottom-0">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center">
-              <img src={Logo} className="h-8 me-3" alt="Housied Logo" />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              <img src={logo.src} className="h-8 me-3" alt={logo.alt} />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white-foreground">
                 HOUSIED
               </span>
             </Link>
@@ -52,7 +54,7 @@ const Footer = () => {
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             {/* Resources Section */}
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold text-black-foreground uppercase dark:text-white-foreground">
                 Resources
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium space-y-4">
@@ -73,7 +75,7 @@ const Footer = () => {
 
             {/* Navigate Section */}
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold text-black-foreground uppercase dark:text-white-foreground">
                 Navigate
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium space-y-4">
@@ -92,7 +94,7 @@ const Footer = () => {
 
             {/* Legal Section */}
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold text-black-foreground uppercase dark:text-white-foreground">
                 Legal
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium space-y-4">
