@@ -1,4 +1,4 @@
-import supabase from '../config/supabaseClient.js';
+import { supabase } from '../config/supabase.js';
 
 export const addProperty = async (req, res) => {
   const { property_zip_code, property_address, house_owner_userID, property_features, property_rent, description } = req.body;
