@@ -19,16 +19,21 @@ export const register = async (req, res) => {
     const userId = crypto.randomUUID();
 
     // Create base user
-    const { error: userError } = await supabase.from("users").insert([
-      {
-        id: userId,
-        email: email,
-        password: await hashPassword(password),
-        account_type: accountType,
-      },
-    ]);
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .insert([
+        {
+          id: userId,
+          email: email,
+          password: await hashPassword(password),
+          account_type: accountType,
+        },
+      ])
+      .select();
 
-    if (userError) throw userError;
+    if (userError) {
+      throw userError;
+    }
 
     // Create specific account type
     const tableData = {
@@ -46,7 +51,9 @@ export const register = async (req, res) => {
       .select()
       .single();
 
-    if (specificError) throw specificError;
+    if (specificError) {
+      throw specificError;
+    }
 
     const token = jwt.sign(
       { userId, accountType },
@@ -54,7 +61,7 @@ export const register = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.status(201).json({
+    res.status(200).json({
       message: "Registration successful",
       token,
       userType: accountType,
