@@ -11,6 +11,8 @@ import Layout from "./pages/Layout/Layout";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import UsersListingPage from "./pages/UsersListingPage/UsersListingPage";
 
+const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"; // Set the base URL
+
 const App = () => {
   const { state } = useGlobalState();
   const { auth } = state;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropertyCard from "../../components/PropertyCard/PropertyCard";
-import axios from "axios";
+import axiosInstance from "../../axiosConfig"; // Import the configured Axios instance
 import Cookies from "js-cookie";
 import { useGlobalState } from "../../hooks/useGlobalState";
 
@@ -9,7 +9,6 @@ const OwnerListingPage = () => {
   const { auth } = state;
   const { userDetails } = auth;
   const token = Cookies.get("authToken");
-  const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   const [properties, setProperties] = useState([]);
   const [filters, setFilters] = useState({
     address: "",
@@ -17,12 +16,17 @@ const OwnerListingPage = () => {
     rent: "",
   });
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const [newProperty, setNewProperty] = useState({
+    address: "",
+    zipCode: "",
+    rent: "",
+  });
 
   useEffect(() => {
     const fetchProperties = async () => {
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/owner/properties`, {
+          const response = await axiosInstance.get("/owner/properties", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -37,7 +41,7 @@ const OwnerListingPage = () => {
       }
     };
     fetchProperties();
-  }, [token, API_URL]);
+  }, [token]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +66,7 @@ const OwnerListingPage = () => {
 
   const handleDelete = async (propertyId) => {
     try {
-      const response = await axios.delete(`${API_URL}/owner/properties/${propertyId}`, {
+      const response = await axiosInstance.delete(`/owner/properties/${propertyId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -73,6 +77,47 @@ const OwnerListingPage = () => {
       }
     } catch (error) {
       console.error("Error deleting property:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProperty({ ...newProperty, [name]: value });
+  };
+
+  const handleAddProperty = async () => {
+    try {
+      const response = await axiosInstance.post("/owner/properties", newProperty, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 201) {
+        setProperties([...properties, response.data]);
+        setFilteredProperties([...filteredProperties, response.data]);
+        setNewProperty({ address: "", zipCode: "", rent: "" });
+      }
+    } catch (error) {
+      console.error("Error adding property:", error);
+    }
+  };
+
+  const handleUpdateProperty = async (propertyId, updatedProperty) => {
+    try {
+      const response = await axiosInstance.put(`/owner/properties/${propertyId}`, updatedProperty, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const updatedProperties = properties.map((property) =>
+          property.property_id === propertyId ? response.data : property
+        );
+        setProperties(updatedProperties);
+        setFilteredProperties(updatedProperties);
+      }
+    } catch (error) {
+      console.error("Error updating property:", error);
     }
   };
 
@@ -109,6 +154,42 @@ const OwnerListingPage = () => {
           />
         </div>
       </div>
+      {/* Add New Property */}
+      <div className="bg-white p-4 rounded-lg shadow mb-6">
+        <h4 className="text-lg font-semibold mb-4">Add New Property</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={newProperty.address}
+            onChange={handleInputChange}
+            className="p-2 border rounded"
+          />
+          <input
+            type="text"
+            name="zipCode"
+            placeholder="Zip Code"
+            value={newProperty.zipCode}
+            onChange={handleInputChange}
+            className="p-2 border rounded"
+          />
+          <input
+            type="text"
+            name="rent"
+            placeholder="Rent"
+            value={newProperty.rent}
+            onChange={handleInputChange}
+            className="p-2 border rounded"
+          />
+          <button
+            onClick={handleAddProperty}
+            className="mt-2 p-2 bg-green-500 text-white rounded"
+          >
+            Add Property
+          </button>
+        </div>
+      </div>
       {/* Space for Property Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-6">
         {filteredProperties.map((property) => (
@@ -119,6 +200,12 @@ const OwnerListingPage = () => {
               className="mt-2 p-2 bg-red-500 text-white rounded"
             >
               Delete
+            </button>
+            <button
+              onClick={() => handleUpdateProperty(property.property_id, property)}
+              className="mt-2 p-2 bg-blue-500 text-white rounded"
+            >
+              Update
             </button>
           </div>
         ))}
