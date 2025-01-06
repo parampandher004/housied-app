@@ -5,7 +5,8 @@ import HomePage from "./pages/HomePage/HomePage";
 import AuthenticationPage from "./pages/AuthenticationPage/AuthenticationPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ListingPage from "./pages/ListingPage/ListingPage";
-import AdminListingPage from "./pages/AdminListingPage/AdminListingPage"; // Add this line
+import AdminListingPage from "./pages/AdminListingPage/AdminListingPage";
+import OwnerListingPage from "./pages/OwnerListingPage/OwnerListingPage";
 import Layout from "./pages/Layout/Layout";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import UsersListingPage from "./pages/UsersListingPage/UsersListingPage";
@@ -22,7 +23,8 @@ const App = () => {
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/layout" element={<Layout />}>
           <Route path="listing" element={<ListingPage />} />
-          <Route path="admin-listing" element={<AdminListingPage />} /> {/* Add this line */}
+          <Route path="admin-listing" element={<AdminListingPage />} />
+          <Route path="owner-listing" element={<OwnerListingPage />} /> {/* Ensure this line is present */}
           <Route path="profile" element={<ProfilePage />} />
           <Route path="users" element={<UsersListingPage />} />
         </Route>
