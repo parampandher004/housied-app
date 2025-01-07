@@ -18,7 +18,7 @@ const AdminListingPage = () => {
     const fetchProperties = async () => {
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/properties`, {
+          const response = await axios.get(`${API_URL}/property`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -37,11 +37,15 @@ const AdminListingPage = () => {
 
   const handleAddProperty = async (newProperty) => {
     try {
-      const response = await axios.post(`${API_URL}/properties/add`, newProperty, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${API_URL}/property/add`,
+        newProperty,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setProperties([...properties, response.data]);
       setFilteredProperties([...properties, response.data]);
     } catch (error) {
@@ -51,13 +55,29 @@ const AdminListingPage = () => {
 
   const handleUpdateProperty = async (updatedProperty) => {
     try {
-      await axios.put(`${API_URL}/properties/update/${updatedProperty.property_id}`, updatedProperty, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setProperties(properties.map(property => property.property_id === updatedProperty.property_id ? updatedProperty : property));
-      setFilteredProperties(filteredProperties.map(property => property.property_id === updatedProperty.property_id ? updatedProperty : property));
+      await axios.put(
+        `${API_URL}/property/update/${updatedProperty.property_id}`,
+        updatedProperty,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setProperties(
+        properties.map((property) =>
+          property.property_id === updatedProperty.property_id
+            ? updatedProperty
+            : property
+        )
+      );
+      setFilteredProperties(
+        filteredProperties.map((property) =>
+          property.property_id === updatedProperty.property_id
+            ? updatedProperty
+            : property
+        )
+      );
     } catch (error) {
       console.error("Error updating property:", error);
     }
@@ -65,13 +85,19 @@ const AdminListingPage = () => {
 
   const handleRemoveProperty = async (propertyId) => {
     try {
-      await axios.delete(`${API_URL}/properties/remove/${propertyId}`, {
+      await axios.delete(`${API_URL}/property/remove/${propertyId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setProperties(properties.filter(property => property.property_id !== propertyId));
-      setFilteredProperties(filteredProperties.filter(property => property.property_id !== propertyId));
+      setProperties(
+        properties.filter((property) => property.property_id !== propertyId)
+      );
+      setFilteredProperties(
+        filteredProperties.filter(
+          (property) => property.property_id !== propertyId
+        )
+      );
     } catch (error) {
       console.error("Error removing property:", error);
     }
@@ -84,7 +110,9 @@ const AdminListingPage = () => {
     const filtered = properties.filter((property) => {
       return (
         (name === "address"
-          ? property.property_address.toLowerCase().includes(value.toLowerCase())
+          ? property.property_address
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : true) &&
         (name === "zipCode"
           ? property.property_zip_code.toString().includes(value)
@@ -102,7 +130,14 @@ const AdminListingPage = () => {
     <div className="min-h-screen bg-gray-100 p-4">
       {/* Admin Controls */}
       <div className="mb-4">
-        <button onClick={() => handleAddProperty({ /* new property data */ })} className="px-4 py-2 bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600">
+        <button
+          onClick={() =>
+            handleAddProperty({
+              /* new property data */
+            })
+          }
+          className="px-4 py-2 bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600"
+        >
           Add Property
         </button>
       </div>
