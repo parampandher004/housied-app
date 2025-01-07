@@ -28,7 +28,9 @@ const DataTable = ({ columns, data }) => {
                   key={column.name}
                   className="py-2 px-4 border-b border-base-200 dark:border-base-400 text-sm text-black-foreground dark:text-white-foreground"
                 >
-                  {column.selector ? row[column.selector] : column.cell(row)}
+                  {typeof column.selector === "function"
+                    ? column.selector(row)
+                    : row[column.selector]}
                 </td>
               ))}
             </tr>
@@ -43,7 +45,7 @@ DataTable.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      selector: PropTypes.string,
+      selector: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
       cell: PropTypes.func,
     })
   ).isRequired,

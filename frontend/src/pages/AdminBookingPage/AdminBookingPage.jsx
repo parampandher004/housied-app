@@ -12,7 +12,10 @@ const columns = [
   { name: "End Date", selector: "benddate" },
   { name: "Booking Time", selector: "booking_time" },
   { name: "Tenant ID", selector: "tenant_id" },
-  { name: "House Owner ID", selector: "property.house_owner_userID" },
+  {
+    name: "House Owner ID",
+    selector: (row) => row.property?.house_owner_userID || "N/A",
+  },
 ];
 
 const AdminBookingPage = () => {

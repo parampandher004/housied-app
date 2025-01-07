@@ -7,21 +7,15 @@ export const getAllPayments = async (req, res) => {
     ).select(`
         payid,
         paydate,
-        paycomplete,
+        pay_complete,
         pdid,
         "tenant_userID",
         property(property_id, house_owner_userID, rent)`);
 
     if (paymentError) throw paymentError;
+    console.log("payments", payments);
 
-    const paymentsWithRent = payments.map((payment) => ({
-      id: payment.payid,
-      amount: payment.property.rent,
-      payment_status: payment.paycomplete ? "Complete" : "Pending",
-      payment_date: payment.paydate,
-    }));
-
-    res.status(200).json({ payments: paymentsWithRent });
+    res.status(200).json({ payments });
   } catch (error) {
     console.error("Error fetching payments:", error);
     res.status(400).json({ error: error.message });
@@ -47,7 +41,7 @@ export const getPaymentsByHouseOwner = async (req, res) => {
         `
         payid,
         paydate,
-        paycomplete,
+        pay_complete,
         pdid,
         "tenant_userID",
         property(property_id, rent)

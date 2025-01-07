@@ -43,7 +43,7 @@ const SideNavBar = () => {
         path: "/layout/admin-listing",
       },
       { Icon: FiUsers, title: "Users Listing", path: "/layout/users" },
-      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
+      { Icon: FiTag, title: "Payment Record", path: "/layout/admin-payment" },
       {
         Icon: FiBookOpen,
         title: "Booking Record",

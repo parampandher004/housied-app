@@ -18,7 +18,7 @@ const ListingPage = () => {
     const fetchProperties = async () => {
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/properties`, {
+          const response = await axios.get(`${API_URL}/property`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -42,7 +42,9 @@ const ListingPage = () => {
     const filtered = properties.filter((property) => {
       return (
         (name === "address"
-          ? property.property_address.toLowerCase().includes(value.toLowerCase())
+          ? property.property_address
+              .toLowerCase()
+              .includes(value.toLowerCase())
           : true) &&
         (name === "zipCode"
           ? property.property_zip_code.toString().includes(value)
