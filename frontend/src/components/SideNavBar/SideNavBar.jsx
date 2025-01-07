@@ -33,18 +33,34 @@ const SideNavBar = () => {
         notifs: 3,
       },
       { Icon: FiMonitor, title: "Property Listing", path: "/layout/listing" },
-      { Icon: FiList, title: "Admin Property Listing", path: "/layout/admin-listing" },
-      { Icon: FiList, title: "Owner Property Listing", path: "/layout/owner-listing" }, // Add this line
+      {
+        Icon: FiList,
+        title: "Admin Property Listing",
+        path: "/layout/admin-listing",
+      },
+      {
+        Icon: FiList,
+        title: "Owner Property Listing",
+        path: "/layout/owner-listing",
+      }, // Add this line
       { Icon: FiUsers, title: "Users Listing", path: "/layout/users" },
       { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
-      { Icon: FiBookOpen, title: "Booking Record", path: "/booking-record" },
+      {
+        Icon: FiBookOpen,
+        title: "Booking Record",
+        path: "/layout/admin-booking",
+      },
       { Icon: FiBarChart, title: "Reports", path: "/reports" },
     ],
     house_owner: [
       { Icon: FiHome, title: "Profile", path: "/profile" },
       { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
       { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
-      { Icon: FiList, title: "Owner Property Listing", path: "/layout/owner-listing" }, // Add this line
+      {
+        Icon: FiList,
+        title: "Owner Property Listing",
+        path: "/layout/owner-listing",
+      }, // Add this line
       { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
       { Icon: FiBookOpen, title: "Booking Record", path: "/booking-record" },
     ],
