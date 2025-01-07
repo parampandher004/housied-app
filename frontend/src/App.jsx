@@ -11,6 +11,7 @@ import Layout from "./pages/Layout/Layout";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import UsersListingPage from "./pages/UsersListingPage/UsersListingPage";
 import AdminBookingPage from "./pages/AdminBookingPage/AdminBookingPage";
+import FeedbackPage from "./pages/FeedbackPage/FeedbackPage";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"; // Set the base URL
 
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="users" element={<UsersListingPage />} />
           <Route path="admin-booking" element={<AdminBookingPage />} />
         </Route>
+        <Route path="/feedback" element={<FeedbackPage />} />
       </Routes>
     </Router>
   );
