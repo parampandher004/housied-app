@@ -73,8 +73,7 @@ export const getProperties = async (req, res) => {
       house_owner_userID,
       property_features,
       rent,
-      is_vacant,
-      description
+      is_vacant
     `);
 
   if (error) {

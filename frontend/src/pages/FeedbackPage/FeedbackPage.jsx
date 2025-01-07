@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const FeedbackPage = () => {
   const [feedback, setFeedback] = useState("");
   const [message, setMessage] = useState("");
+  const token = Cookies.get("authToken");
+  const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/feedback", { feedback });
+      const response = await axios.post(
+        `${API_URL}/feedback`,
+        { feedback },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setMessage(response.data.message);
       setFeedback("");
     } catch (error) {

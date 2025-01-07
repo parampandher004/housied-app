@@ -176,9 +176,13 @@ const AdminListingPage = () => {
         {filteredProperties.map((property) => (
           <PropertyCard
             key={property.property_id}
-            property={property}
-            onUpdate={handleUpdateProperty}
-            onRemove={handleRemoveProperty}
+            ownerName={property.owner_name}
+            rooms={property.property_rooms}
+            bathrooms={property.property_bathrooms}
+            address={property.property_address}
+            rent={property.property_rent}
+            ownerImage={property.owner_image}
+            ownerContact={property.owner_contact}
           />
         ))}
       </div>

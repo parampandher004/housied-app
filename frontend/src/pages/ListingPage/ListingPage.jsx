@@ -18,7 +18,7 @@ const ListingPage = () => {
     const fetchProperties = async () => {
       if (token) {
         try {
-          const response = await axios.get(`${API_URL}/properties`, {
+          const response = await axios.get(`${API_URL}/property`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -91,7 +91,17 @@ const ListingPage = () => {
       {/* Space for Property Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-6">
         {filteredProperties.map((property) => (
-          <PropertyCard key={property.property_id} property={property} />
+          <PropertyCard
+            key={property.property_id}
+            backgroundImage={property.property_image}
+            ownerName={property.owner_name}
+            rooms={property.property_rooms}
+            bathrooms={property.property_bathrooms}
+            address={property.property_address}
+            rent={property.property_rent}
+            ownerImage={property.owner_image}
+            ownerContact={property.owner_contact}
+          />
         ))}
       </div>
     </div>

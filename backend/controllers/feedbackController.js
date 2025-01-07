@@ -27,7 +27,7 @@ export const getFeedback = async (req, res) => {
 
   const { data: feedback, error } = await supabase
     .from('feedback')
-    .select('*')
+    .select('fid, frating, fcomments, fdate, tenant_userID')
     .eq('property_id', property_id);
 
   if (error) {
