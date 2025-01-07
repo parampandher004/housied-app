@@ -13,6 +13,7 @@ import UsersListingPage from "./pages/UsersListingPage/UsersListingPage";
 import AdminBookingPage from "./pages/AdminBookingPage/AdminBookingPage";
 import OwnerBookingPage from "./pages/OwnerBookingPage/OwnerBookingPage";
 import TenantBookingPage from "./pages/TenantBookingPage/TenantBookingPage";
+import FeedbackPage from "./pages/FeedbackPage/FeedbackPage";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"; // Set the base URL
 
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="tenant-booking" element={<TenantBookingPage />} />{" "}
           {/* Ensure this line is present */}
         </Route>
+        <Route path="/feedback" element={<FeedbackPage />} />
       </Routes>
     </Router>
   );
