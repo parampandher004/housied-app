@@ -13,7 +13,6 @@ export const getAllPayments = async (req, res) => {
         property(property_id, house_owner_userID, rent)`);
 
     if (paymentError) throw paymentError;
-    console.log("payments", payments);
 
     res.status(200).json({ payments });
   } catch (error) {

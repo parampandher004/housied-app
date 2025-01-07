@@ -8,10 +8,7 @@ export const addProperty = async (req, res) => {
     property_features,
     rent,
     is_vacant,
-    description,
   } = req.body;
-
-  console.log("Adding property:", req.body);
 
   const { data: property, error: propertyError } = await supabase
     .from("property")
@@ -23,7 +20,6 @@ export const addProperty = async (req, res) => {
         property_features,
         rent,
         is_vacant,
-        description,
       },
     ])
     .single();
@@ -32,8 +28,6 @@ export const addProperty = async (req, res) => {
     console.error("Error adding property:", propertyError);
     return res.status(400).send(propertyError.message);
   }
-
-  console.log("Property added:", property);
 
   res.send("Property added");
 };
@@ -53,8 +47,6 @@ export const removeProperty = async (req, res) => {
     return res.status(400).send(propertyError.message);
   }
 
-  console.log("Property removed with id:", id);
-
   res.send(`Property with id ${id} removed`);
 };
 
@@ -66,7 +58,6 @@ export const updateProperty = async (req, res) => {
     property_features,
     rent,
     is_vacant,
-    description,
   } = req.body;
 
   console.log("Updating property with id:", id);
@@ -79,7 +70,6 @@ export const updateProperty = async (req, res) => {
       property_features,
       rent,
       is_vacant,
-      description,
     })
     .eq("property_id", id);
 
@@ -88,14 +78,10 @@ export const updateProperty = async (req, res) => {
     return res.status(400).send(propertyError.message);
   }
 
-  console.log("Property updated with id:", id);
-
   res.send(`Property with id ${id} updated`);
 };
 
 export const getProperties = async (req, res) => {
-  console.log("Fetching properties");
-
   const { data: properties, error } = await supabase.from("property").select(`
       property_id,
       property_zip_code,
@@ -103,15 +89,18 @@ export const getProperties = async (req, res) => {
       house_owner_userID,
       property_features,
       rent,
-      is_vacant
+      is_vacant,
+      house_owner:house_owner_userID(
+        house_owner_firstName,
+        house_owner_middleName,
+        house_owner_lastName,
+        house_owner_phoneNumber)
     `);
 
   if (error) {
     console.error("Error fetching properties:", error);
     return res.status(400).send(error.message);
   }
-
-  console.log("Properties fetched:", properties);
 
   res.send(properties);
 };

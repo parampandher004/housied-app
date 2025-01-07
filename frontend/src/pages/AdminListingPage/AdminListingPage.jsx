@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropertyCard from "../../components/PropertyCard/PropertyCard";
+import SearchButton from "../../components/SearchButton/SearchButton";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -103,33 +104,38 @@ const AdminListingPage = () => {
     }
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
+  const handleFilterChange = (name, value) => {
     setFilters({ ...filters, [name]: value });
 
     const filtered = properties.filter((property) => {
+      const fullAddress = `${property.property_address} ${property.property_zip_code}`;
       return (
         (name === "address"
-          ? property.property_address
-              .toLowerCase()
-              .includes(value.toLowerCase())
+          ? fullAddress.toLowerCase().includes(value.toLowerCase())
           : true) &&
         (name === "zipCode"
           ? property.property_zip_code.toString().includes(value)
           : true) &&
-        (name === "rent"
-          ? property.property_rent.toString().includes(value)
-          : true)
+        (name === "rent" ? property.rent.toString().includes(value) : true)
       );
     });
 
     setFilteredProperties(filtered);
   };
 
+  const handleClear = () => {
+    setFilters({
+      address: "",
+      zipCode: "",
+      rent: "",
+    });
+    setFilteredProperties(properties);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground p-4">
       {/* Admin Controls */}
-      <div className="mb-4">
+      <div className="mb-4 flex space-x-4">
         <button
           onClick={() =>
             handleAddProperty({
@@ -140,9 +146,30 @@ const AdminListingPage = () => {
         >
           Add Property
         </button>
+        <button
+          onClick={() =>
+            handleUpdateProperty({
+              /* updated property data */
+            })
+          }
+          className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600"
+        >
+          Update Property
+        </button>
+        <button
+          onClick={() =>
+            handleRemoveProperty({
+              /* property id to remove */
+            })
+          }
+          className="px-4 py-2 bg-red-500 text-white rounded-md shadow-sm hover:bg-red-600"
+        >
+          Delete Property
+        </button>
       </div>
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
+      <div className="bg-white-fill dark:bg-black-fill p-4 rounded-lg shadow mb-6">
+        <SearchButton onClear={handleClear} />
         <h4 className="text-lg font-semibold mb-4">Filters</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <input
@@ -150,24 +177,24 @@ const AdminListingPage = () => {
             name="address"
             placeholder="Filter by Address"
             value={filters.address}
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+            onChange={(e) => handleFilterChange("address", e.target.value)}
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
             name="zipCode"
             placeholder="Filter by Zip Code"
             value={filters.zipCode}
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+            onChange={(e) => handleFilterChange("zipCode", e.target.value)}
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
             name="rent"
             placeholder="Filter by Rent"
             value={filters.rent}
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+            onChange={(e) => handleFilterChange("rent", e.target.value)}
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
         </div>
       </div>
@@ -176,13 +203,14 @@ const AdminListingPage = () => {
         {filteredProperties.map((property) => (
           <PropertyCard
             key={property.property_id}
-            ownerName={property.owner_name}
-            rooms={property.property_rooms}
-            bathrooms={property.property_bathrooms}
+            propertyId={property.property_id}
+            zipCode={property.property_zip_code}
             address={property.property_address}
-            rent={property.property_rent}
-            ownerImage={property.owner_image}
-            ownerContact={property.owner_contact}
+            houseOwnerUserId={property.house_owner_userID}
+            features={property.property_features}
+            rent={property.rent}
+            isVacant={property.is_vacant}
+            houseOwner={property.house_owner}
           />
         ))}
       </div>

@@ -15,7 +15,8 @@ const TenantPaymentPage = () => {
 
   useEffect(() => {
     const fetchPayments = async () => {
-      const API_URL = import.meta.env.BACKEND_URL || "http://localhost:5000";
+      const API_URL =
+        import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
       try {
         const response = await axios.get(
           `${API_URL}/payment/tenant/${userID}`,
@@ -89,10 +90,10 @@ const TenantPaymentPage = () => {
   };
 
   const columns = [
-    { name: "Payment ID", selector: "id" },
-    { name: "Amount", selector: "amount" },
-    { name: "Status", selector: "payment_status" },
-    { name: "Date", selector: "payment_date" },
+    { name: "Payment ID", selector: "id", sortable: true },
+    { name: "Amount", selector: "amount", sortable: true },
+    { name: "Status", selector: "payment_status", sortable: true },
+    { name: "Date", selector: "payment_date", sortable: true },
     {
       name: "Actions",
       cell: (row) => (
@@ -121,7 +122,7 @@ const TenantPaymentPage = () => {
     });
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-base-100 dark:bg-base-900 text-black dark:text-white">
       <h2 className="text-2xl font-bold">Pending Payments</h2>
       <DataTable columns={pendingColumns} data={pendingPayments} />
       <h2 className="text-2xl font-bold">All Payments</h2>

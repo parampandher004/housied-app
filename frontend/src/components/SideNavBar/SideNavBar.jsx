@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import {
   FiBarChart,
-  FiChevronDown,
   FiChevronsRight,
   FiDollarSign,
   FiHome,
   FiMonitor,
-  FiShoppingCart,
   FiTag,
   FiUsers,
   FiList,
   FiBookOpen,
+  FiLogOut,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useGlobalState } from "../../hooks/useGlobalState";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
+import Cookies from "js-cookie";
 
 const SideNavBar = () => {
   const [open, setOpen] = useState(true);
@@ -22,22 +23,19 @@ const SideNavBar = () => {
   const { state } = useGlobalState();
   const { auth } = state;
   const { userType = "tenant" } = auth;
+  const navigate = useNavigate();
 
   const options = {
     admin: [
       { Icon: FiHome, title: "Profile", path: "/layout/profile" },
-      {
-        Icon: FiDollarSign,
-        title: "Dashboard",
-        path: "/layout/dashboard",
-        notifs: 3,
-      },
+
       { Icon: FiMonitor, title: "Property Listing", path: "/layout/listing" },
       {
         Icon: FiList,
         title: "Admin Property Listing",
         path: "/layout/admin-listing",
       },
+
       { Icon: FiUsers, title: "Users Listing", path: "/layout/users" },
       { Icon: FiTag, title: "Payment Record", path: "/layout/admin-payment" },
       {
@@ -46,34 +44,47 @@ const SideNavBar = () => {
         path: "/layout/admin-booking",
       },
       { Icon: FiBarChart, title: "Reports", path: "/reports" },
-      { Icon: FiBookOpen, title: "Feedback", path: "/feedback" }, // Add this line
+      { Icon: FiBookOpen, title: "Feedback", path: "/feedback" },
     ],
     house_owner: [
-      { Icon: FiHome, title: "Profile", path: "/profile" },
-      { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
-      { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
+      { Icon: FiHome, title: "Profile", path: "/layout/profile" },
+      { Icon: FiMonitor, title: "Property Listing", path: "/layout/listing" },
       {
         Icon: FiList,
         title: "Owner Property Listing",
         path: "/layout/owner-listing",
-      }, // Add this line
-      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
-      { Icon: FiBookOpen, title: "Booking Record", path: "/booking-record" },
-      { Icon: FiBookOpen, title: "Feedback", path: "/feedback" }, // Add this line
+      },
+      { Icon: FiTag, title: "Payment Record", path: "/owner-payment" },
+      {
+        Icon: FiBookOpen,
+        title: "Booking Record",
+        path: "/layout/owner-booking",
+      },
+      { Icon: FiBookOpen, title: "Feedback", path: "/feedback" },
     ],
     tenant: [
-      { Icon: FiHome, title: "Profile", path: "/profile" },
-      { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
-      { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
-      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
-      { Icon: FiBookOpen, title: "Feedback", path: "/feedback" }, // Add this line
+      { Icon: FiHome, title: "Profile", path: "/layout/profile" },
+      { Icon: FiMonitor, title: "Property Listing", path: "/layout/listing" },
+      { Icon: FiTag, title: "Payment Record", path: "/layout/tenant-payment" },
+      { Icon: FiBookOpen, title: "Feedback", path: "/feedback" },
+      {
+        Icon: FiBookOpen,
+        title: "Booking Record",
+        path: "/layout/tenant-booking",
+      },
     ],
+  };
+
+  const handleLogout = () => {
+    // Clear token and redirect to sign-in page
+    Cookies.remove("authToken");
+    navigate("/signin", { replace: true });
   };
 
   return (
     <motion.nav
       layout
-      className="sticky top-0 h-screen z-10 shrink-0 border-r border-slate-300 bg-white p-2"
+      className="sticky top-0 h-screen z-10 shrink-0 border-r border-black-border dark:border-white-border bg-white-background dark:bg-black-background p-2"
       style={{
         width: open ? "225px" : "fit-content",
       }}
@@ -95,6 +106,61 @@ const SideNavBar = () => {
         ))}
       </div>
 
+      {open && (
+        <div className="absolute top-2 right-2">
+          <DarkModeSwitch />
+        </div>
+      )}
+
+      <Link to="/">
+        <button className="absolute bottom-28 left-0 right-0 border-t border-black-border dark:border-white-border transition-colors hover:bg-base-200 dark:hover:bg-base-400">
+          <div className="flex items-center p-2">
+            <motion.div
+              layout
+              className="grid size-10 place-content-center text-lg"
+            >
+              <FiHome />
+            </motion.div>
+            {open && (
+              <motion.span
+                layout
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.125 }}
+                className="text-xs font-medium"
+              >
+                Home
+              </motion.span>
+            )}
+          </div>
+        </button>
+      </Link>
+
+      <button
+        onClick={handleLogout}
+        className="absolute bottom-14 left-0 right-0 border-t border-black-border dark:border-white-border transition-colors hover:bg-base-200 dark:hover:bg-base-400"
+      >
+        <div className="flex items-center p-2">
+          <motion.div
+            layout
+            className="grid size-10 place-content-center text-lg"
+          >
+            <FiLogOut />
+          </motion.div>
+          {open && (
+            <motion.span
+              layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.125 }}
+              className="text-xs font-medium"
+            >
+              Log Out
+            </motion.span>
+          )}
+        </div>
+      </button>
+
       <ToggleClose open={open} setOpen={setOpen} />
     </motion.nav>
   );
@@ -108,8 +174,8 @@ const Option = ({ Icon, title, path, selected, setSelected, open, notifs }) => {
         onClick={() => setSelected(title)}
         className={`relative flex h-10 w-full items-center rounded-md transition-colors ${
           selected === title
-            ? "bg-indigo-100 text-indigo-800"
-            : "text-slate-500 hover:bg-slate-100"
+            ? "bg-base-200 dark:bg-base-400 text-black-foreground dark:text-white-foreground"
+            : "text-black-foreground dark:text-white-foreground hover:bg-base-200 dark:hover:bg-base-400"
         }`}
       >
         <motion.div
@@ -129,21 +195,6 @@ const Option = ({ Icon, title, path, selected, setSelected, open, notifs }) => {
             {title}
           </motion.span>
         )}
-
-        {notifs && open && (
-          <motion.span
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
-            style={{ y: "-50%" }}
-            transition={{ delay: 0.5 }}
-            className="absolute right-2 top-1/2 size-4 rounded bg-indigo-500 text-xs text-white"
-          >
-            {notifs}
-          </motion.span>
-        )}
       </motion.button>
     </Link>
   );
@@ -161,8 +212,8 @@ const TitleSection = ({ open }) => {
     fullName = `${user.firstName} ${user.lastName}`;
   }
   return (
-    <div className="mb-3 border-b border-slate-300 pb-3">
-      <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
+    <div className="mb-3 border-b border-black-border dark:border-white-border pb-3">
+      <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-base-200 dark:hover:bg-base-400">
         <Link to="/layout/profile" className="flex items-center gap-2">
           <Logo />
           {open && user && (
@@ -172,10 +223,12 @@ const TitleSection = ({ open }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.125 }}
             >
-              <span className="block text-xs text-black font-semibold">
+              <span className="block text-xs text-black-foreground dark:text-white-foreground font-semibold">
                 {fullName}
               </span>
-              <span className="block text-xs text-slate-500">{userType}</span>
+              <span className="block text-xs text-base-400 dark:text-base-100">
+                {userType}
+              </span>
             </motion.div>
           )}
         </Link>
@@ -203,7 +256,7 @@ const ToggleClose = ({ open, setOpen }) => {
     <motion.button
       layout
       onClick={() => setOpen((pv) => !pv)}
-      className="absolute bottom-0 left-0 right-0 border-t border-slate-300 transition-colors hover:bg-slate-100"
+      className="absolute bottom-0 left-0 right-0 border-t border-black-border dark:border-white-border transition-colors hover:bg-base-200 dark:hover:bg-base-400"
     >
       <div className="flex items-center p-2">
         <motion.div

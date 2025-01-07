@@ -79,7 +79,7 @@ const AdminBookingPage = () => {
               value={filters.bookingDate}
               onChange={handleFilterChange}
               placeholder="Booking Date"
-              className="border px-2 py-1 rounded-lg"
+              className="border px-2 py-1 rounded-lg text-black-foreground dark:text-white-foreground bg-white-background dark:bg-black-background"
             />
           </div>
           <div className="mr-2">
@@ -90,7 +90,7 @@ const AdminBookingPage = () => {
               value={filters.bookingTime}
               onChange={handleFilterChange}
               placeholder="Booking Time"
-              className="border px-2 py-1 rounded-lg"
+              className="border px-2 py-1 rounded-lg text-black-foreground dark:text-white-foreground bg-white-background dark:bg-black-background"
             />
           </div>
           <div>
@@ -100,7 +100,7 @@ const AdminBookingPage = () => {
               value={filters.bookingNumber}
               onChange={handleFilterChange}
               placeholder="Booking Number"
-              className="border px-2 py-1 rounded-lg"
+              className="border px-2 py-1 rounded-lg text-black-foreground dark:text-white-foreground bg-white-background dark:bg-black-background"
             />
           </div>
         </div>

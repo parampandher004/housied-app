@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SearchButton = () => {
+const SearchButton = ({ onClear }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      navigate(`/layout?search=${encodeURIComponent(searchTerm)}`);
+      navigate(`/layout/listing?search=${encodeURIComponent(searchTerm)}`);
     }
+  };
+
+  const handleClear = () => {
+    setSearchTerm("");
+    onClear();
+    navigate("/layout/listing");
   };
 
   return (
@@ -37,6 +43,12 @@ const SearchButton = () => {
           className="ml-2 px-4 py-2 bg-base-400 dark:bg-base-100 dark:text-black-foreground text-white-foreground rounded-md"
         >
           Search
+        </button>
+        <button
+          onClick={handleClear}
+          className="ml-2 px-4 py-2 bg-red-500 text-white-foreground rounded-md"
+        >
+          Clear
         </button>
       </div>
     </div>

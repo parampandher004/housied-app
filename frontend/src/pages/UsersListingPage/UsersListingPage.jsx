@@ -84,25 +84,25 @@ const UsersListingPage = () => {
     users?.filter((user) => user.accountType === "tenant").length || 0;
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-white-background dark:bg-black-background min-h-screen text-black-foreground dark:text-white-foreground">
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-blue-500 text-white rounded-lg shadow-lg p-4">
+        <div className="bg-base-200 dark:bg-base-400 text-black-foreground dark:text-white-foreground rounded-lg shadow-lg p-4">
           <h3 className="text-xl font-bold">Total Users</h3>
           <p className="text-3xl">{totalUsers}</p>
         </div>
-        <div className="bg-green-500 text-white rounded-lg shadow-lg p-4">
+        <div className="bg-secondary-200 dark:bg-secondary-400 text-black-foreground dark:text-white-foreground rounded-lg shadow-lg p-4">
           <h3 className="text-xl font-bold">House Owners</h3>
           <p className="text-3xl">{totalHouseOwners}</p>
         </div>
-        <div className="bg-purple-500 text-white rounded-lg shadow-lg p-4">
+        <div className="bg-primary-200 dark:bg-primary-400 text-black-foreground dark:text-white-foreground rounded-lg shadow-lg p-4">
           <h3 className="text-xl font-bold">Tenants</h3>
           <p className="text-3xl">{totalTenants}</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
+      <div className="bg-base-100 dark:bg-base-400 p-4 rounded-lg shadow mb-6">
         <h4 className="text-lg font-semibold mb-4">Filters</h4>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
@@ -111,7 +111,7 @@ const UsersListingPage = () => {
             placeholder="Filter by Name"
             value={filters.name}
             onChange={handleFilterChange}
-            className="p-2 border rounded"
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
@@ -119,7 +119,7 @@ const UsersListingPage = () => {
             placeholder="Filter by Email"
             value={filters.email}
             onChange={handleFilterChange}
-            className="p-2 border rounded"
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
@@ -127,7 +127,7 @@ const UsersListingPage = () => {
             placeholder="Filter by Role"
             value={filters.role}
             onChange={handleFilterChange}
-            className="p-2 border rounded"
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
@@ -135,33 +135,52 @@ const UsersListingPage = () => {
             placeholder="Filter by UserID"
             value={filters.id}
             onChange={handleFilterChange}
-            className="p-2 border rounded"
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white p-4 rounded-lg shadow">
+      <div className="bg-white-background dark:bg-black-background p-4 rounded-lg shadow">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="p-3 border">UserID</th>
-              <th className="p-3 border">Name</th>
-              <th className="p-3 border">Email</th>
-              <th className="p-3 border">Role</th>
-              <th className="p-3 border">Actions</th>
+            <tr className="bg-base-200 dark:bg-base-400">
+              <th className="p-3 border border-gray-300 dark:border-gray-600">
+                UserID
+              </th>
+              <th className="p-3 border border-gray-300 dark:border-gray-600">
+                Name
+              </th>
+              <th className="p-3 border border-gray-300 dark:border-gray-600">
+                Email
+              </th>
+              <th className="p-3 border border-gray-300 dark:border-gray-600">
+                Role
+              </th>
+              <th className="p-3 border border-gray-300 dark:border-gray-600">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {filteredUsers?.map((user) => (
-              <tr key={user.userID} className="hover:bg-gray-100">
-                <td className="p-3 border">{user.userID}</td>
-                <td className="p-3 border">
+              <tr
+                key={user.userID}
+                className="hover:bg-base-200 dark:hover:bg-base-400"
+              >
+                <td className="p-3 border border-gray-300 dark:border-gray-600">
+                  {user.userID}
+                </td>
+                <td className="p-3 border border-gray-300 dark:border-gray-600">
                   {user.firstName} {user.middleName} {user.lastName}
                 </td>
-                <td className="p-3 border">{user.email}</td>
-                <td className="p-3 border">{user.accountType}</td>
-                <td className="p-3 border">
+                <td className="p-3 border border-gray-300 dark:border-gray-600">
+                  {user.email}
+                </td>
+                <td className="p-3 border border-gray-300 dark:border-gray-600">
+                  {user.accountType}
+                </td>
+                <td className="p-3 border border-gray-300 dark:border-gray-600">
                   <button
                     className="bg-red-500 text-white px-2 py-1 rounded mr-2"
                     onClick={() => handleDeleteUser(user.userID)}

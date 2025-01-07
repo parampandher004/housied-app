@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropertyCard from "../../components/PropertyCard/PropertyCard";
+import SearchButton from "../../components/SearchButton/SearchButton";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useLocation } from "react-router-dom";
 
 const ListingPage = () => {
   const token = Cookies.get("authToken");
@@ -13,6 +15,7 @@ const ListingPage = () => {
     rent: "",
   });
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -35,33 +38,51 @@ const ListingPage = () => {
     fetchProperties();
   }, [token, API_URL]);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get("search") || "";
+
+    const filtered = properties.filter((property) => {
+      const fullDetails = `${property.property_address} ${property.property_zip_code} ${property.rent} ${property.house_owner.house_owner_firstName} ${property.house_owner.house_owner_middleName} ${property.house_owner.house_owner_lastName} ${property.property_features}`;
+      return fullDetails.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    setFilteredProperties(filtered);
+  }, [location.search, properties]);
+
+  const handleFilterChange = (name, value) => {
     setFilters({ ...filters, [name]: value });
 
     const filtered = properties.filter((property) => {
+      const fullAddress = `${property.property_address} ${property.property_zip_code}`;
       return (
         (name === "address"
-          ? property.property_address
-              .toLowerCase()
-              .includes(value.toLowerCase())
+          ? fullAddress.toLowerCase().includes(value.toLowerCase())
           : true) &&
         (name === "zipCode"
           ? property.property_zip_code.toString().includes(value)
           : true) &&
-        (name === "rent"
-          ? property.property_rent.toString().includes(value)
-          : true)
+        (name === "rent" ? property.rent.toString().includes(value) : true)
       );
     });
 
     setFilteredProperties(filtered);
   };
 
+  const handleClear = () => {
+    setFilters({
+      address: "",
+      zipCode: "",
+      rent: "",
+    });
+    setFilteredProperties(properties);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground p-4">
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
+      <div className="bg-white-fill dark:bg-black-fill p-4 rounded-lg shadow mb-6">
+        <SearchButton onClear={handleClear} />
         <h4 className="text-lg font-semibold mb-4">Filters</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <input
@@ -69,24 +90,24 @@ const ListingPage = () => {
             name="address"
             placeholder="Filter by Address"
             value={filters.address}
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+            onChange={(e) => handleFilterChange("address", e.target.value)}
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
             name="zipCode"
             placeholder="Filter by Zip Code"
             value={filters.zipCode}
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+            onChange={(e) => handleFilterChange("zipCode", e.target.value)}
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
           <input
             type="text"
             name="rent"
             placeholder="Filter by Rent"
             value={filters.rent}
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+            onChange={(e) => handleFilterChange("rent", e.target.value)}
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white-background dark:bg-black-background text-black-foreground dark:text-white-foreground"
           />
         </div>
       </div>
@@ -95,14 +116,14 @@ const ListingPage = () => {
         {filteredProperties.map((property) => (
           <PropertyCard
             key={property.property_id}
-            backgroundImage={property.property_image}
-            ownerName={property.owner_name}
-            rooms={property.property_rooms}
-            bathrooms={property.property_bathrooms}
+            propertyId={property.property_id}
+            zipCode={property.property_zip_code}
             address={property.property_address}
-            rent={property.property_rent}
-            ownerImage={property.owner_image}
-            ownerContact={property.owner_contact}
+            houseOwnerUserId={property.house_owner_userID}
+            features={property.property_features}
+            rent={property.rent}
+            isVacant={property.is_vacant}
+            houseOwner={property.house_owner}
           />
         ))}
       </div>

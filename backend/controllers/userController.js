@@ -67,7 +67,7 @@ export const updateUserInfo = async (req, res) => {
     const { email, ...otherUpdates } = updates;
     // Convert frontend field names to database column names
     const updateData = {};
-    Object.entries(updates).forEach(([key, value]) => {
+    Object.entries(otherUpdates).forEach(([key, value]) => {
       updateData[`${accountType}_${key}`] = value;
     });
 
