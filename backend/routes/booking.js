@@ -5,10 +5,7 @@ import {
   getBookingsByHouseOwner,
   getBookingsByTenant,
 } from "../controllers/bookingController.js";
-// ,
-// addBooking,
-// updateBooking,
-// deleteBooking,
+
 const router = express.Router();
 
 router.get("/owner/:house_owner_userID", authenticate, getBookingsByHouseOwner);

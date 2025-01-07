@@ -25,10 +25,10 @@ const DataTable = ({ columns, data }) => {
             >
               {columns.map((column) => (
                 <td
-                  key={column.selector}
+                  key={column.name}
                   className="py-2 px-4 border-b border-base-200 dark:border-base-400 text-sm text-black-foreground dark:text-white-foreground"
                 >
-                  {row[column.selector]}
+                  {column.selector ? row[column.selector] : column.cell(row)}
                 </td>
               ))}
             </tr>
@@ -43,7 +43,8 @@ DataTable.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      selector: PropTypes.string.isRequired,
+      selector: PropTypes.string,
+      cell: PropTypes.func,
     })
   ).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -73,7 +73,7 @@ const SideNavBar = () => {
       { Icon: FiHome, title: "Profile", path: "/profile" },
       { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
       { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
-      { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
+      { Icon: FiTag, title: "Payment Record", path: "/layout/tenant-payment" },
       { Icon: FiBookOpen, title: "Feedback", path: "/feedback" }, // Add this line
       {
         Icon: FiBookOpen,
