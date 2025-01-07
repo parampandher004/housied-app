@@ -104,3 +104,23 @@ export const getProperties = async (req, res) => {
 
   res.send(properties);
 };
+
+export const getPropertiesByHouseOwner = async (req, res) => {
+  try {
+    const { house_owner_userID } = req.params;
+
+    const { data: properties, error: propertyError } = await supabase
+      .from("property")
+      .select("*")
+      .eq("house_owner_userID", house_owner_userID);
+
+    if (propertyError) throw propertyError;
+    res.status(200).json({
+      message: "Properties retrieved successfully",
+      properties,
+    });
+  } catch (error) {
+    console.error("Error retrieving properties:", error);
+    res.status(400).json({ error: error.message });
+  }
+};

@@ -16,6 +16,7 @@ import TenantBookingPage from "./pages/TenantBookingPage/TenantBookingPage";
 import FeedbackPage from "./pages/FeedbackPage/FeedbackPage";
 import TenantPaymentPage from "./pages/TenantPaymentPage/TenantPaymentPage";
 import AdminPaymentPage from "./pages/AdminPaymentPage/AdminPaymentPage";
+import OwnerPaymentPage from "./pages/OwnerPaymentPage/OwnerPaymentPage";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"; // Set the base URL
 
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="tenant-payment" element={<TenantPaymentPage />} />
           <Route path="feedback" element={<FeedbackPage />} />
           <Route path="admin-payment" element={<AdminPaymentPage />} />
+          <Route path="owner-payment" element={<OwnerPaymentPage />} />{" "}
         </Route>
       </Routes>
     </Router>

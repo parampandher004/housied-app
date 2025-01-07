@@ -54,7 +54,7 @@ const SideNavBar = () => {
         title: "Owner Property Listing",
         path: "/layout/owner-listing",
       },
-      { Icon: FiTag, title: "Payment Record", path: "/owner-payment" },
+      { Icon: FiTag, title: "Payment Record", path: "/layout/owner-payment" },
       {
         Icon: FiBookOpen,
         title: "Booking Record",

@@ -32,8 +32,7 @@ const PropertyCard = ({
               Vacant: {isVacant ? "Yes" : "No"}
             </p>
           </div>
-
-          <OwnerInfo houseOwner={houseOwner} />
+          {houseOwner && <OwnerInfo houseOwner={houseOwner} />}
         </div>
       </div>
     </div>

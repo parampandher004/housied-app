@@ -73,7 +73,7 @@ const OwnerBookingPage = () => {
             Booking Number:
           </label>
           <input
-            className="border-2 border-gray-300 p-2"
+            className="border-2 border-gray-300 p-2 rounded-lg"
             type="text"
             name="bookingNumber"
             value={filters.bookingNumber}
@@ -85,7 +85,7 @@ const OwnerBookingPage = () => {
             Booking Date:
           </label>
           <input
-            className="border-2 border-gray-300 p-2"
+            className="border-2 border-gray-300 p-2 rounded-lg"
             type="text"
             name="bookingDate"
             value={filters.bookingDate}
@@ -97,7 +97,7 @@ const OwnerBookingPage = () => {
             Booking Time:
           </label>
           <input
-            className="border-2 border-gray-300 p-2"
+            className="border-2 border-gray-300 p-2 rounded-lg"
             type="text"
             name="bookingTime"
             value={filters.bookingTime}

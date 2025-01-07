@@ -28,7 +28,6 @@ const TenantBookingPage = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       const API_URL = import.meta.env.BACKEND_URL || "http://localhost:5000";
-      console.log(userID);
       try {
         const response = await axios.get(
           `${API_URL}/booking/tenant/${userID}`,

@@ -4,6 +4,7 @@ import {
   removeProperty,
   updateProperty,
   getProperties,
+  getPropertiesByHouseOwner,
 } from "../controllers/propertyController.js";
 import { authenticate } from "../middleware/auth.js";
 
@@ -20,5 +21,12 @@ router.put("/update/:id", authenticate, updateProperty);
 
 // Get properties
 router.get("/", authenticate, getProperties);
+
+// Get properties by house owner
+router.get(
+  "/owner/:house_owner_userID",
+  authenticate,
+  getPropertiesByHouseOwner
+);
 
 export default router;

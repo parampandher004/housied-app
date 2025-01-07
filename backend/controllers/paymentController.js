@@ -53,7 +53,7 @@ export const getPaymentsByHouseOwner = async (req, res) => {
     const paymentsWithRent = payments.map((payment) => ({
       id: payment.payid,
       amount: payment.property.rent,
-      payment_status: payment.paycomplete ? "Complete" : "Pending",
+      payment_status: payment.pay_complete ? "Complete" : "Pending",
       payment_date: payment.paydate,
     }));
 

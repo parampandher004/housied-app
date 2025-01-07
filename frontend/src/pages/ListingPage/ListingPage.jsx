@@ -29,6 +29,7 @@ const ListingPage = () => {
           if (response.status === 200) {
             setProperties(response.data);
             setFilteredProperties(response.data);
+            console.log(response.data);
           }
         } catch (error) {
           console.error("Error fetching properties:", error);
