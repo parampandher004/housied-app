@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import axiosInstance from "../../axiosConfig";
+import Cookies from "js-cookie";
 import { useGlobalState } from "../../hooks/useGlobalState";
-import axios from "axios";
-import { FaCalendar, FaClock } from "react-icons/fa";
 import DataTable from "../../components/DataTable/DataTable";
-import Cookies from "js-cookie"; // Import js-cookie
+import axios from "axios";
 
 const columns = [
   { name: "Booking ID", selector: "booking_id" },
@@ -12,10 +12,9 @@ const columns = [
   { name: "End Date", selector: "benddate" },
   { name: "Booking Time", selector: "booking_time" },
   { name: "Tenant ID", selector: "tenant_id" },
-  { name: "House Owner ID", selector: "property.house_owner_userID" },
 ];
 
-const AdminBookingPage = () => {
+const OwnerBookingPage = () => {
   const [bookings, setBookings] = useState([]);
   const [filters, setFilters] = useState({
     bookingNumber: "",
@@ -23,16 +22,18 @@ const AdminBookingPage = () => {
     bookingTime: "",
   });
   const [filteredBookings, setFilteredBookings] = useState([]);
+  const { state } = useGlobalState();
+  const { auth } = state;
+  const { userID } = auth;
+  const token = Cookies.get("authToken");
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-    const token = Cookies.get("authToken");
     const fetchBookings = async () => {
+      const API_URL = import.meta.env.BACKEND_URL || "http://localhost:5000";
       try {
-        // Get token from cookies
-        const response = await axios.get(`${API_URL}/booking`, {
+        const response = await axios.get(`${API_URL}/booking/owner/${userID}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Add token to headers
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.status === 200) {
@@ -44,7 +45,7 @@ const AdminBookingPage = () => {
       }
     };
     fetchBookings();
-  }, []);
+  }, [token, userID]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -66,40 +67,42 @@ const AdminBookingPage = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold">Bookings</h1>
-      <div className="flex flex-row justify-between my-4">
-        <div className="flex flex-row">
-          <div className="mr-2">
-            <FaCalendar className="inline-block" />
-            <input
-              type="text"
-              name="bookingDate"
-              value={filters.bookingDate}
-              onChange={handleFilterChange}
-              placeholder="Booking Date"
-              className="border px-2 py-1 rounded-lg"
-            />
-          </div>
-          <div className="mr-2">
-            <FaClock className="inline-block" />
-            <input
-              type="text"
-              name="bookingTime"
-              value={filters.bookingTime}
-              onChange={handleFilterChange}
-              placeholder="Booking Time"
-              className="border px-2 py-1 rounded-lg"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="bookingNumber"
-              value={filters.bookingNumber}
-              onChange={handleFilterChange}
-              placeholder="Booking Number"
-              className="border px-2 py-1 rounded-lg"
-            />
-          </div>
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row space-x-2">
+          <label className="text-xl" htmlFor="bookingNumber">
+            Booking Number:
+          </label>
+          <input
+            className="border-2 border-gray-300 p-2"
+            type="text"
+            name="bookingNumber"
+            value={filters.bookingNumber}
+            onChange={handleFilterChange}
+          />
+        </div>
+        <div className="flex flex-row space-x-2">
+          <label className="text-xl" htmlFor="bookingDate">
+            Booking Date:
+          </label>
+          <input
+            className="border-2 border-gray-300 p-2"
+            type="text"
+            name="bookingDate"
+            value={filters.bookingDate}
+            onChange={handleFilterChange}
+          />
+        </div>
+        <div className="flex flex-row space-x-2">
+          <label className="text-xl" htmlFor="bookingTime">
+            Booking Time:
+          </label>
+          <input
+            className="border-2 border-gray-300 p-2"
+            type="text"
+            name="bookingTime"
+            value={filters.bookingTime}
+            onChange={handleFilterChange}
+          />
         </div>
       </div>
       <DataTable columns={columns} data={filteredBookings} />
@@ -107,4 +110,4 @@ const AdminBookingPage = () => {
   );
 };
 
-export default AdminBookingPage;
+export default OwnerBookingPage;

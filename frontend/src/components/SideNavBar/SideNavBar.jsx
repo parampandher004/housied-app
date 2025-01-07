@@ -11,10 +11,13 @@ import {
   FiUsers,
   FiList,
   FiBookOpen,
+  FiLogOut,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useGlobalState } from "../../hooks/useGlobalState";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
+import Cookies from "js-cookie";
 
 const SideNavBar = () => {
   const [open, setOpen] = useState(true);
@@ -22,6 +25,7 @@ const SideNavBar = () => {
   const { state } = useGlobalState();
   const { auth } = state;
   const { userType = "tenant" } = auth;
+  const navigate = useNavigate();
 
   const options = {
     admin: [
@@ -42,7 +46,7 @@ const SideNavBar = () => {
         Icon: FiList,
         title: "Owner Property Listing",
         path: "/layout/owner-listing",
-      }, // Add this line
+      },
       { Icon: FiUsers, title: "Users Listing", path: "/layout/users" },
       { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
       {
@@ -60,22 +64,37 @@ const SideNavBar = () => {
         Icon: FiList,
         title: "Owner Property Listing",
         path: "/layout/owner-listing",
-      }, // Add this line
+      },
       { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
-      { Icon: FiBookOpen, title: "Booking Record", path: "/booking-record" },
+      {
+        Icon: FiBookOpen,
+        title: "Booking Record",
+        path: "/layout/owner-booking",
+      },
     ],
     tenant: [
       { Icon: FiHome, title: "Profile", path: "/profile" },
       { Icon: FiDollarSign, title: "Dashboard", path: "/dashboard" },
       { Icon: FiMonitor, title: "Property Listing", path: "/property-listing" },
       { Icon: FiTag, title: "Payment Record", path: "/payment-record" },
+      {
+        Icon: FiBookOpen,
+        title: "Booking Record",
+        path: "/layout/tenant-booking",
+      },
     ],
+  };
+
+  const handleLogout = () => {
+    // Clear token and redirect to sign-in page
+    Cookies.remove("authToken");
+    navigate("/signin", { replace: true });
   };
 
   return (
     <motion.nav
       layout
-      className="sticky top-0 h-screen z-10 shrink-0 border-r border-slate-300 bg-white p-2"
+      className="sticky top-0 h-screen z-10 shrink-0 border-r border-gray-300 bg-white dark:bg-black p-2"
       style={{
         width: open ? "225px" : "fit-content",
       }}
@@ -97,6 +116,37 @@ const SideNavBar = () => {
         ))}
       </div>
 
+      {open && (
+        <div className="absolute top-2 right-2">
+          <DarkModeSwitch />
+        </div>
+      )}
+
+      <button
+        onClick={handleLogout}
+        className="absolute bottom-12 left-0 right-0 border-t border-gray-300 dark:border-gray-700 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        <div className="flex items-center p-2">
+          <motion.div
+            layout
+            className="grid size-10 place-content-center text-lg"
+          >
+            <FiLogOut />
+          </motion.div>
+          {open && (
+            <motion.span
+              layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.125 }}
+              className="text-xs font-medium"
+            >
+              Log Out
+            </motion.span>
+          )}
+        </div>
+      </button>
+
       <ToggleClose open={open} setOpen={setOpen} />
     </motion.nav>
   );
@@ -110,8 +160,8 @@ const Option = ({ Icon, title, path, selected, setSelected, open, notifs }) => {
         onClick={() => setSelected(title)}
         className={`relative flex h-10 w-full items-center rounded-md transition-colors ${
           selected === title
-            ? "bg-indigo-100 text-indigo-800"
-            : "text-slate-500 hover:bg-slate-100"
+            ? "bg-base-100 dark:bg-base-300 text-gray-800 dark:text-gray-200"
+            : "text-gray-500 dark:text-gray-400 hover:bg-base-200 dark:hover:bg-base-400"
         }`}
       >
         <motion.div
@@ -163,8 +213,8 @@ const TitleSection = ({ open }) => {
     fullName = `${user.firstName} ${user.lastName}`;
   }
   return (
-    <div className="mb-3 border-b border-slate-300 pb-3">
-      <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
+    <div className="mb-3 border-b border-gray-300 dark:border-gray-700 pb-3">
+      <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-base-200 dark:hover:bg-base-400">
         <Link to="/layout/profile" className="flex items-center gap-2">
           <Logo />
           {open && user && (
@@ -174,10 +224,12 @@ const TitleSection = ({ open }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.125 }}
             >
-              <span className="block text-xs text-black font-semibold">
+              <span className="block text-xs text-black dark:text-white font-semibold">
                 {fullName}
               </span>
-              <span className="block text-xs text-slate-500">{userType}</span>
+              <span className="block text-xs text-gray-500 dark:text-gray-400">
+                {userType}
+              </span>
             </motion.div>
           )}
         </Link>
@@ -205,7 +257,7 @@ const ToggleClose = ({ open, setOpen }) => {
     <motion.button
       layout
       onClick={() => setOpen((pv) => !pv)}
-      className="absolute bottom-0 left-0 right-0 border-t border-slate-300 transition-colors hover:bg-slate-100"
+      className="absolute bottom-0 left-0 right-0 border-t border-gray-300 dark:border-gray-700 transition-colors hover:bg-base-200 dark:hover:bg-base-400"
     >
       <div className="flex items-center p-2">
         <motion.div
