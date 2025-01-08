@@ -1,14 +1,8 @@
 import express from "express";
-import { addReport, getReports, getMonthlyRevenue, getFundsByPropertyType, getWeeklyRevenue, getTopRatedProperties, getRatedPropertiesByType } from "../controllers/reportController.js";
+import { getMonthlyRevenue, getFundsByPropertyType, getWeeklyRevenue, getTopRatedProperties, getRatedPropertiesByType } from "../controllers/reportController.js";
 import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
-
-// Add report
-router.post("/add", authenticate, addReport);
-
-// Get reports
-router.get("/:property_id", authenticate, getReports);
 
 // Get monthly revenue
 router.get("/revenue/:month/:year", authenticate, getMonthlyRevenue);

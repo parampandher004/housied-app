@@ -1,45 +1,5 @@
 import { supabase } from '../config/supabase.js';
 
-export const addReport = async (req, res) => {
-  const { property_id, report_type, report_description, tenant_userID } = req.body;
-
-  console.log("Adding report:", req.body);
-
-  const { data: report, error: reportError } = await supabase
-    .from('report')
-    .insert([{ property_id, report_type, report_description, tenant_userID }])
-    .single();
-
-  if (reportError) {
-    console.error("Error adding report:", reportError);
-    return res.status(400).send(reportError.message);
-  }
-
-  console.log("Report added:", report);
-
-  res.send("Report added");
-};
-
-export const getReports = async (req, res) => {
-  const { property_id } = req.params;
-
-  console.log("Fetching reports for property_id:", property_id);
-
-  const { data: reports, error } = await supabase
-    .from('report')
-    .select('*')
-    .eq('property_id', property_id);
-
-  if (error) {
-    console.error("Error fetching reports:", error);
-    return res.status(400).send(error.message);
-  }
-
-  console.log("Reports fetched:", reports);
-
-  res.send(reports);
-};
-
 export const getMonthlyRevenue = async (req, res) => {
   const { month, year } = req.params;
 

@@ -3,10 +3,15 @@ import PropertyCard from "../../components/PropertyCard/PropertyCard";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useGlobalState } from "../../hooks/useGlobalState";
+import BookingPage from "../BookingPage/BookingPage";
 
 const ListingPage = () => {
+  const navigate = useNavigate();
   const token = Cookies.get("authToken");
+  const { state } = useGlobalState();
+  const { userType } = state.auth;
   const API_URL = import.meta.env.BACKEND_URL || "http://localhost:5000";
   const [properties, setProperties] = useState([]);
   const [filters, setFilters] = useState({
@@ -29,7 +34,6 @@ const ListingPage = () => {
           if (response.status === 200) {
             setProperties(response.data);
             setFilteredProperties(response.data);
-            console.log(response.data);
           }
         } catch (error) {
           console.error("Error fetching properties:", error);
@@ -50,6 +54,10 @@ const ListingPage = () => {
 
     setFilteredProperties(filtered);
   }, [location.search, properties]);
+
+  const handleBookingClick = (property_id) => {
+    navigate('/layout/booking', { state: { property_id } });
+  };
 
   const handleFilterChange = (name, value) => {
     setFilters({ ...filters, [name]: value });
@@ -114,19 +122,28 @@ const ListingPage = () => {
       </div>
       {/* Space for Property Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-6">
-        {filteredProperties.map((property) => (
-          <PropertyCard
-            key={property.property_id}
-            propertyId={property.property_id}
-            zipCode={property.property_zip_code}
-            address={property.property_address}
-            houseOwnerUserId={property.house_owner_userID}
-            features={property.property_features}
-            rent={property.rent}
-            isVacant={property.is_vacant}
-            houseOwner={property.house_owner}
-          />
-        ))}
+        {filteredProperties.map((property) =>
+          property.is_vacant ? (
+            <>
+              <PropertyCard
+                key={property.property_id}
+                propertyId={property.property_id}
+                zipCode={property.property_zip_code}
+                address={property.property_address}
+                houseOwnerUserId={property.house_owner_userID}
+                features={property.property_features}
+                rent={property.rent}
+                isVacant={property.is_vacant}
+                houseOwner={property.house_owner}
+              />
+              {userType === "tenant" ? (
+                
+                  <button onClick={() => handleBookingClick(property.property_id)}>Book</button>
+              
+              ) : null}
+            </>
+          ) : null
+        )}
       </div>
     </div>
   );

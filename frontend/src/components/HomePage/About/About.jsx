@@ -25,7 +25,7 @@ const About = () => {
           your preferences. Our platform connects you with verified listings and
           ensures a seamless renting experience.
         </p>
-        <Link to={auth.isAuthenticated ? "/listingPage" : "/signin"}>
+        <Link to={auth.isAuthenticated ? "/layout/listing" : "/signin"}>
           <CustomButton
             text={auth.isAuthenticated ? "View Listings" : "Get Started"}
           />

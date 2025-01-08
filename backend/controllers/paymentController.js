@@ -147,8 +147,7 @@ export const payPendingPaymentByTenant = async (req, res) => {
   try {
     const { tenant_userID } = req.params;
     const { paymentId } = req.body;
-    console.log("tenant_userID", tenant_userID);
-    console.log("paymentId", paymentId);
+  
     // Update the payment status to true
     const { data, error } = await supabase
       .from("payment")

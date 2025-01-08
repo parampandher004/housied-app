@@ -67,17 +67,10 @@ export default function AvatarButton() {
                 to="/layout/profile"
                 className="block px-4 py-2 hover:bg-base-100 dark:hover:bg-base-400"
               >
-                Dashboard
+                Profile
               </Link>
             </li>
-            <li>
-              <Link
-                to="/settings"
-                className="block px-4 py-2 hover:bg-base-100 dark:hover:bg-base-400"
-              >
-                Settings
-              </Link>
-            </li>
+    
             <li>
               <button
                 onClick={handleSignOut}

@@ -74,3 +74,19 @@ export const getBookingsByTenant = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const addBooking = async (req, res) => {
+  try {
+    const { tenant_userId, property_id } = req.params;
+    const { bstartdate, benddate } = req.body;
+    console.log(tenant_userId, property_id, bstartdate, benddate);
+
+    const { data: booking, error: bookingError } = await supabase.from("booking").insert([{property_id: property_id, tenant_id: tenant_userId, bstartdate: bstartdate, benddate: benddate}]);
+    if (bookingError) throw bookingError;
+
+    res.status(200).json({ message: "Booking added successfully", booking });
+  } catch (error) {
+    console.error("Error adding booking:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
