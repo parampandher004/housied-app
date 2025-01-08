@@ -36,14 +36,14 @@ export default function AvatarButton() {
         <button
           id="avatarButton"
           type="button"
-          className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+          className="w-7 h-7 rounded-full bg-white-background dark:bg-black-background flex items-center justify-center text-black-foreground dark:text-white-foreground cursor-pointer"
           onClick={() => setDropdownOpen((prev) => !prev)}
         >
           <FaUserCircle size={28} />
         </button>
       ) : (
         <Link to="/signin">
-          <button className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+          <button className="w-7 h-7 rounded-full bg-white-background dark:bg-black-background flex items-center justify-center text-black-foreground dark:text-white-foreground ">
             <FaUserCircle size={28} />
           </button>
         </Link>
@@ -53,19 +53,19 @@ export default function AvatarButton() {
         <div
           id="userDropdown"
           ref={dropdownRef}
-          className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg z-50 dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600"
+          className="absolute right-0 mt-2 w-44 bg-white-background rounded-lg shadow-lg z-50 dark:bg-black-background divide-y divide-gray-100 dark:divide-gray-600"
         >
-          <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+          <div className="px-4 py-3 text-sm text-black-foreground dark:text-white-foreground">
             <div>{user.firstName || "User"}</div>
             <div className="font-medium truncate">
               {auth.email || "email@example.com"}
             </div>
           </div>
-          <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+          <ul className="py-2 text-sm text-black-foreground dark:text-white-foreground">
             <li>
               <Link
                 to="/layout/profile"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="block px-4 py-2 hover:bg-base-100 dark:hover:bg-base-400"
               >
                 Dashboard
               </Link>
@@ -73,7 +73,7 @@ export default function AvatarButton() {
             <li>
               <Link
                 to="/settings"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="block px-4 py-2 hover:bg-base-100 dark:hover:bg-base-400"
               >
                 Settings
               </Link>
@@ -81,7 +81,7 @@ export default function AvatarButton() {
             <li>
               <button
                 onClick={handleSignOut}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="block w-full text-left px-4 py-2 hover:bg-base-100 dark:hover:bg-base-400 "
               >
                 Sign Out
               </button>
