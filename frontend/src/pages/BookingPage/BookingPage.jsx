@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../../hooks/useGlobalState';
 
 const BookingPage = () => {
+    const navigate = useNavigate();
   const location = useLocation();
   const { property_id } = location.state || {};
   const [formData, setFormData] = useState({
@@ -33,7 +34,9 @@ const BookingPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
+        if (response.status === 200) {
+            navigate("/layout/listing");
+        };
       } catch (error) {
         console.error(error);
       }

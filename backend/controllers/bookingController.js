@@ -80,9 +80,13 @@ export const addBooking = async (req, res) => {
     const { tenant_userId, property_id } = req.params;
     const { bstartdate, benddate } = req.body;
     console.log(tenant_userId, property_id, bstartdate, benddate);
+    const f = new Boolean(false);
 
     const { data: booking, error: bookingError } = await supabase.from("booking").insert([{property_id: property_id, tenant_id: tenant_userId, bstartdate: bstartdate, benddate: benddate}]);
     if (bookingError) throw bookingError;
+
+    const {data, error: error} = await supabase.from("property").update({is_vacant: f}).eq("property_id", property_id);
+    if (error) throw error;
 
     res.status(200).json({ message: "Booking added successfully", booking });
   } catch (error) {
